@@ -10,6 +10,12 @@ public class Solution {
     }
 
     public static double getWeight(int weightEarth) {
+<<<<<<< HEAD
         return weightEarth * 0.17;
+=======
+        double weightLuna = weightEarth * 0.17;
+
+        return weightLuna;
+>>>>>>> 6d0a2e93acded99e924263fe8dc5ddb5e35fb270
     }
 }
