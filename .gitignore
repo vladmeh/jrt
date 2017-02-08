@@ -1,0 +1,9 @@
+
+*.properties
+*.iml
+/Инструкция.png
+/out/
+/.idea/
+*.info
+*jrtc
+
