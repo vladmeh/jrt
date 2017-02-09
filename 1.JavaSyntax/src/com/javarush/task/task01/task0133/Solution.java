@@ -10,12 +10,7 @@ public class Solution {
     }
 
     public static int getCountSecondsPassedInCurrentHour(int seconds) {
-<<<<<<< HEAD
-        return seconds % 3600;
-=======
-        int secondsCurrentHour = seconds % 3600;
 
-        return secondsCurrentHour;
->>>>>>> 6d0a2e93acded99e924263fe8dc5ddb5e35fb270
+        return seconds % 3600;
     }
 }
