@@ -25,18 +25,25 @@ public class Solution {
 
     public static ArrayList<String> fix(ArrayList<String> list) {
 
+        ArrayList<String> list_fix = new ArrayList<>();
+
         for (int i = 0; i < list.size(); i++) {
             String s = list.get(i);
             int r = s.indexOf("р");
             int l = s.indexOf("л");
 
-            if (l != -1)
-                list.add(s);
-            if (r != -1)
-                list.remove(i);
+            if(l == -1 && r == -1)
+                list_fix.add(s);
+
             if (l > -1 && r > -1)
-                list.add(s);
+                list_fix.add(s);
+
+            if (l > -1 && r == -1){
+                list_fix.add(s);
+                list_fix.add(s);
+            }
+
         }
-        return list;
+        return list_fix;
     }
 }
