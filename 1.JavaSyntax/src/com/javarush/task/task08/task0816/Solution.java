@@ -2,6 +2,7 @@ package com.javarush.task.task08.task0816;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /* 
@@ -26,14 +27,16 @@ public class Solution {
     }
 
     public static void removeAllSummerPeople(HashMap<String, Date> map) {
-        //напишите тут ваш код
+        Iterator<Map.Entry<String, Date>> iterator = map.entrySet().iterator();
 
+        while (iterator.hasNext()){
+            Map.Entry<String, Date> pair = iterator.next();
+            if (pair.getValue().getMonth() > 4 && pair.getValue().getMonth() < 8)
+                iterator.remove();
+        }
     }
 
     public static void main(String[] args) {
-        HashMap<String, Date> map = createMap();
 
-        for (Map.Entry<String, Date> pair: map.entrySet())
-            System.out.println(pair.getKey() + " " + pair.getValue());
     }
 }
