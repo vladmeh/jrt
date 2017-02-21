@@ -15,8 +15,8 @@ public class Solution {
     public static void main(String[] args) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Date date = new Date(reader.readLine());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.ENGLISH);
 
-        System.out.println(simpleDateFormat.format(date));
+        System.out.println(simpleDateFormat.format(date).toUpperCase());
     }
 }
