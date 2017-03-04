@@ -3,8 +3,8 @@ package com.javarush.task.task07.task0728;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-/* 
-В убывающем порядке
+/*
+Сортировка чисел в убывающем порядке
 */
 
 public class Solution {
@@ -25,11 +25,11 @@ public class Solution {
     //Метод "Пузырька"
     public static void sort(int[] array) {
         for (int i = 0; i < array.length; i++) {
-            for (int k = array.length - 1; k > i ; k--) {
-                if (array[k] > array[k -1]){
-                    int tmp = array[k];
-                    array[k] = array[k-1];
-                    array[k-1] = tmp;
+            for (int j = array.length - 1; j > i ; j--) {
+                if (array[j] > array[j -1]){
+                    int n = array[j];
+                    array[j] = array[j-1];
+                    array[j-1] = n;
                 }
             }
         }
