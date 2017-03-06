@@ -28,7 +28,60 @@ public class Solution {
         }
     }
 
-    public static void sort(String[] array) {
+    public static void sort(String[] array)
+    {
+        //Создаем два списка для чисел и Строк
+        ArrayList<Integer> stringList = new ArrayList<>();
+        ArrayList<Integer> intList = new ArrayList<>();
+
+        //Заполняем их ИНДЕКСАМИ исходного массива
+        for (int i = 0; i < array.length; i++)
+        {
+            if (isNumber(array[i])) {
+                intList.add(i);
+            } else {
+                stringList.add(i);
+            }
+        }
+
+        //Сортируем строковые значения по алфавиту в исходном массиве
+        for (int i = (stringList.size() - 1); i > 0; i--)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                //Получаем индексы сравниваемых значений из списка
+                int num = stringList.get(j);
+                int numNext = stringList.get(j + 1);
+                //Сравниваем строки с помощью метода isGreaterThan
+                if (isGreaterThan(array[num], array[numNext])) {
+                    //Делаем замену
+                    String tmp = array[num];
+                    array[num] = array[numNext];
+                    array[numNext] = tmp;
+                }
+            }
+        }
+
+        //Сортируем числовые значения по убыванию в исходном массиве
+        for (int i = (intList.size() - 1); i > 0; i--)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                ////Получаем индексы сравниваемых значений из списка
+                int num = intList.get(j);
+                int numNext = intList.get(j + 1);
+                //Сравниваем значения, предварительно переведя их в числа
+                if (Integer.parseInt(array[numNext]) > Integer.parseInt(array[num])) {
+                    //делаем замену
+                    String tmp = array[num];
+                    array[num] = array[numNext];
+                    array[numNext] = tmp;
+                }
+            }
+        }
+    }
+
+    public static void mySort(String[] array) {
 
         //Вычисляем количество строк и чисел в массиве
         int counterW = 0;
