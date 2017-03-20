@@ -19,7 +19,7 @@ public class Solution {
         doMove(amigo, enemy);
     }
 
-    public static void doMove(Robot robotFirst, Robot robotSecond) {
+    public static void doMove(AbstractRobot robotFirst, AbstractRobot robotSecond) {
         BodyPart attacked = robotFirst.attack();
         BodyPart defenced = robotFirst.defense();
         System.out.println(String.format("%s атаковал робота %s, атакована %s, защищена %s",
