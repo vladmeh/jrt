@@ -2,6 +2,7 @@ package com.javarush.task.task01.task0139;
 
 /* 
 Лучше поздно, чем никогда: hello world!
+Напиши программу, которая выведет на экран фразу «Hello World!»
 */
 
 public class Solution {
