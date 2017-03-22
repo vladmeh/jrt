@@ -2,6 +2,9 @@ package com.javarush.task.task03.task0307;
 
 /* 
 Привет Starcraft!
+
+Создать 10 зергов, 5 протоссов и 12 терран.
+Дать им всем уникальные имена.
 */
 
 public class Solution {
