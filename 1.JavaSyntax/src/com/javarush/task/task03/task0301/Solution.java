@@ -2,6 +2,9 @@ package com.javarush.task.task03.task0301;
 
 /* 
 Делиться полезно
+
+Реализуй метод public static void div(int a, int b).
+Метод должен делить первое число на второе, и выводить на экран результат деления а на b.
 */
 
 public class Solution {

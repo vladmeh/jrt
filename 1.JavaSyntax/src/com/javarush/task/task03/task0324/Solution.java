@@ -2,6 +2,8 @@ package com.javarush.task.task03.task0324;
 
 /* 
 Меркантильные намерения
+
+Вывести на экран десять раз надпись «Я хочу большую зарплату, и для этого изучаю Java»
 */
 
 public class Solution {
