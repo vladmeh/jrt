@@ -2,6 +2,8 @@ package com.javarush.task.task01.task0128;
 
 /* 
 Просто, как 2+2
+
+Напиши программу, которая вызывает метод sum с параметрами 2 и 2.
 */
 
 public class Solution {

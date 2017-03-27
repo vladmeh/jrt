@@ -2,6 +2,8 @@ package com.javarush.task.task01.task0127;
 
 /* 
 Число в квадрате
+
+Напиши программу, которая выводит на экран квадрат числа 5.
 */
 
 public class Solution {

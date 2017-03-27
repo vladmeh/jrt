@@ -2,6 +2,8 @@ package com.javarush.task.task01.task0122;
 
 /* 
 Поиск ошибок
+
+Исправь ошибку в программе. Нужно чтобы программа выводила на экран число 100.
 */
 
 public class Solution {
