@@ -2,6 +2,11 @@ package com.javarush.task.task02.task0214;
 
 /* 
 Минимум двух чисел
+
+Написать функцию, которая возвращает минимум из двух чисел.
+
+Подсказка:
+Нужно написать тело существующей функции min.
 */
 public class Solution {
     public static int min(int a, int b) {

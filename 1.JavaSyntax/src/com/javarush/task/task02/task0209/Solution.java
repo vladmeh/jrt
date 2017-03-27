@@ -2,6 +2,10 @@ package com.javarush.task.task02.task0209;
 
 /* 
 Макс, Белла и Джек
+
+Создать 3 объекта типа Dog (собака).
+Сохрани каждый экземпляр в отдельную переменную.
+Присвоить им имена «Max», «Bella», «Jack».
 */
 public class Solution {
     public static void main(String[] args) {

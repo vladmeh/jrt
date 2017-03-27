@@ -2,6 +2,11 @@ package com.javarush.task.task02.task0216;
 
 /* 
 Минимум трёх чисел
+
+Написать функцию, которая вычисляет минимум из трёх чисел.
+
+Подсказка:
+Нужно написать тело существующей функции min.
 */
 public class Solution {
     public static int min(int a, int b, int c) {

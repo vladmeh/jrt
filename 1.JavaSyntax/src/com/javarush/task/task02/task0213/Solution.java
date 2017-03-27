@@ -2,6 +2,9 @@ package com.javarush.task.task02.task0213;
 
 /* 
 Питомцам нужны люди
+
+Создай объект типа Cat (кот), объект типа Dog (собака), объект типа Fish (рыбка) и объект типа Woman.
+Присвой каждому животному владельца (owner).
 */
 public class Solution {
     public static void main(String[] args) {

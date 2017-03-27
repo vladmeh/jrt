@@ -2,6 +2,12 @@ package com.javarush.task.task02.task0217;
 
 /* 
 Минимум четырех чисел
+
+Написать функцию, которая вычисляет минимум из четырёх чисел.
+Функция min(a,b,c,d) должна использовать (вызывать) функцию min(a,b)
+
+Подсказка:
+Нужно написать тело двух существующих функций min.
 */
 public class Solution {
     public static int min(int a, int b, int c, int d) {

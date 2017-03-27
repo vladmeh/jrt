@@ -2,6 +2,8 @@ package com.javarush.task.task02.task0212;
 
 /* 
 Великолепная восьмерка
+
+Создай 10 переменных типа Cat и 8 объектов типа Cat.
 */
 public class Solution {
     public static void main(String[] args) {

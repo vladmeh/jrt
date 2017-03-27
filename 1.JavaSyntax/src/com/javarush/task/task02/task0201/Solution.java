@@ -2,6 +2,8 @@ package com.javarush.task.task02.task0201;
 
 /* 
 Реализуем метод print
+
+Реализуй метод print. Метод должен вывести на экран переданную строку 4 раза. Каждый раз с новой строки.
 */
 public class Solution {
     public static void main(String[] args) {

@@ -2,6 +2,8 @@ package com.javarush.task.task02.task0211;
 
 /* 
 Самое нужное число
+
+Закомментируй максимальное количество строк, чтобы на экран вывелось число 19
 */
 public class Solution {
     public static void main(String[] args) {
