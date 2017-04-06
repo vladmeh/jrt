@@ -1,11 +1,7 @@
 package com.javarush.task.level16.concurrency;
 
-import net.mindview.util.DaemonThreadFactory;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
+import java.util.concurrent.*;
+import net.mindview.util.*;
 import static net.mindview.util.Print.print;
 
 public class DaemonFromFactory implements Runnable{
