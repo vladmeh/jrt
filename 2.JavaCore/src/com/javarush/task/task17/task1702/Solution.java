@@ -71,7 +71,9 @@ public class Solution {
         for (int i = 0; i < countThreads; i++) threads.add(new SortThread());
         //Запускаем все нити
         for (Thread thread : threads) thread.start();
-        //Приостанавливаем все нити
+        //Приостанавливаем все нити до завершения запущенных
+        //т.е. все запущенные нити (потоки) одновременно обращаются к одному объекту
+        // - сортируют массив
         for (Thread thread : threads) thread.join();
     }
 
