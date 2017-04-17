@@ -1,4 +1,4 @@
-package com.javarush.task.task18.task1803;
+package com.javarush.task.task18.task1804;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /* 
-Самые частые байты
+Самые редкие байты
 
+Самые редкие байты
 Ввести с консоли имя файла.
-Найти байт или байты с максимальным количеством повторов.
+Найти байт или байты с минимальным количеством повторов.
 Вывести их на экран через пробел.
 Закрыть поток ввода-вывода.
 
@@ -18,7 +19,7 @@ import java.util.Map;
 Требования:
 1. Программа должна считывать имя файла с консоли.
 2. Для чтения из файла используй поток FileInputStream.
-3. В консоль через пробел должны выводиться все байты из файла с максимальным количеством повторов.
+3. В консоль через пробел должны выводиться все байты из файла с минимальным количеством повторов.
 4. Данные в консоль должны выводится в одну строку.
 5. Поток чтения из файла должен быть закрыт.
 */
@@ -33,9 +34,9 @@ public class Solution {
 
         Map<Integer, Integer> map = new HashMap<>();
 
+        Integer data = 0;
         while (inputStream.available() > 0){
-            int data = inputStream.read();
-
+            data = inputStream.read();
             if (map.containsKey(data))
                 map.put(data, map.get(data)+1);
             else
@@ -44,13 +45,12 @@ public class Solution {
 
         inputStream.close();
 
-        int n = 0;
+        int n = data;
         for (Map.Entry<Integer, Integer> entry: map.entrySet())
-            if (entry.getValue() > n) n = entry.getValue();
+            if (entry.getValue() < n) n = entry.getValue();
 
         for (Map.Entry<Integer, Integer> entry: map.entrySet())
             if (entry.getValue().equals(n))
                 System.out.printf("%d ", entry.getKey());
-
     }
 }

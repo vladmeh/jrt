@@ -1,24 +1,31 @@
-package com.javarush.task.task18.task1803;
+package com.javarush.task.task18.task1805;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /* 
-Самые частые байты
+Сортировка байт
 
 Ввести с консоли имя файла.
-Найти байт или байты с максимальным количеством повторов.
-Вывести их на экран через пробел.
+Считать все байты из файла.
+Не учитывая повторений — отсортировать их по байт-коду в возрастающем порядке.
+Вывести на экран.
 Закрыть поток ввода-вывода.
+
+Пример байт входного файла:
+44 83 44
+
+Пример вывода:
+44 83
 
 
 Требования:
 1. Программа должна считывать имя файла с консоли.
 2. Для чтения из файла используй поток FileInputStream.
-3. В консоль через пробел должны выводиться все байты из файла с максимальным количеством повторов.
+3. В консоль через пробел должны выводиться все уникальные байты из файла в порядке возрастания.
 4. Данные в консоль должны выводится в одну строку.
 5. Поток чтения из файла должен быть закрыт.
 */
@@ -31,26 +38,15 @@ public class Solution {
                         new InputStreamReader(System.in)
                 ).readLine());
 
-        Map<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> map = new TreeMap<>();
 
         while (inputStream.available() > 0){
-            int data = inputStream.read();
-
-            if (map.containsKey(data))
-                map.put(data, map.get(data)+1);
-            else
-                map.put(data, 1);
+            map.put(inputStream.read(), null);
         }
 
         inputStream.close();
 
-        int n = 0;
         for (Map.Entry<Integer, Integer> entry: map.entrySet())
-            if (entry.getValue() > n) n = entry.getValue();
-
-        for (Map.Entry<Integer, Integer> entry: map.entrySet())
-            if (entry.getValue().equals(n))
-                System.out.printf("%d ", entry.getKey());
-
+            System.out.printf("%d ", entry.getKey());
     }
 }
