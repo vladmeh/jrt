@@ -1,8 +1,19 @@
 package com.javarush.task.task17.task1712;
 
+/**
+ * Реализует действия Повара
+ * Исполняется в потоке
+ */
+
 public class Cook implements Runnable {
     public boolean continueWorking = true;
 
+    /**
+     * Если очередь заказов пуста
+     * через каждые 0,1 сек выводим сообщение
+     * Как только заказ появляется в очереди
+     * готовим блюдо
+     */
     @Override
     public void run() {
         boolean needToWait;
@@ -11,6 +22,7 @@ public class Cook implements Runnable {
                 synchronized (this) {
                     needToWait = !needToCookOrders();
                     if (!needToWait) {
+                        //готовим блюдо
                         cooking();
                     }
                 }
