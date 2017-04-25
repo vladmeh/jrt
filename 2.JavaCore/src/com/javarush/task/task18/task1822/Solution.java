@@ -37,8 +37,13 @@ public class Solution {
         FileInputStream fileInputStream = new FileInputStream(file);
         Scanner in = new Scanner(fileInputStream, "UTF-8");
 
-        while (in.hasNext())
-            System.out.println(in.nextLine());
+        while (in.hasNext()){
+            String line = in.nextLine();
+            String[] aLine = line.split(" ");
+            if (aLine[0].equals(args[0]))
+                System.out.println(line);
+        }
+
 
         fileInputStream.close();
     }
