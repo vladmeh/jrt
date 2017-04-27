@@ -51,6 +51,22 @@ public class Solution {
 
         //Возвращаем все как было
         System.setOut(consoleStream);
+
+        String[] str = result.split("\\s+");
+        int n1 = Integer.parseInt(str[0]);
+        int n2 = Integer.parseInt(str[2]);
+        int res = 0;
+        switch (str[1]){
+            case "+": res = n1+n2;
+            break;
+
+            case "-": res = n1-n2;
+            break;
+
+            case "*": res = n1*n2;
+            break;
+        }
+        System.out.printf("%d %s %d = %d", n1, str[1], n2, res);
     }
 
     public static class TestString {
