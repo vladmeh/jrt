@@ -1,4 +1,4 @@
-package com.javarush.task.level18;
+package com.javarush.task.level19;
 
 /**
  * Перенаправление стандартного ввода/вывода.
@@ -10,7 +10,7 @@ public class Redirecting {
             throws IOException {
         PrintStream console = System.out;
         BufferedInputStream in = new BufferedInputStream(
-                new FileInputStream("D:\\JavaRush\\JavaRushTasks\\Java4thEdition\\src\\com\\javarush\\task\\level18\\Redirecting.java"));
+                new FileInputStream("Java4thEdition\\src\\com\\javarush\\task\\level19\\Redirecting.java"));
         PrintStream out = new PrintStream(
                 new BufferedOutputStream(
                         new FileOutputStream("test.out")));
