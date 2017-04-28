@@ -6,3 +6,6 @@
 *.info
 *jrtc
 *.dat
+*.txt
+*.out
+*.tmp
