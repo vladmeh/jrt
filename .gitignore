@@ -9,3 +9,4 @@
 *.txt
 *.out
 *.tmp
+/lib/
