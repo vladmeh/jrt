@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class MySolution {
     public static void main(String[] args) throws IOException {
-        Document htmlFile = Jsoup.parse(new File("D:\\JavaRush\\JavaRushTasks\\2.JavaCore\\src\\com\\javarush\\task\\task19\\task1918\\Условие.jrtc"), "UTF-8");
+        Document htmlFile = Jsoup.parse(new File("D:\\JavaRush\\JavaRushTasks\\testFiles\\htmlParsing.txt"), "UTF-8");
 
         Elements tag = htmlFile.getElementsByTag("span");
         System.out.println(tag.toString());
