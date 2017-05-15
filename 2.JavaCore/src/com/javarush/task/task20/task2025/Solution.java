@@ -26,26 +26,26 @@ getNumbers должен возвращать все такие числа в п�
 
 */
 public class Solution {
+
     public static long[] getNumbers(long N) {
-
-        List list = ArmstrongNumbersMultiSetLongOpt.generate((int) (Math.log10(N) + 1));
-        //return list.stream().mapToLong(l->l).toArray();
-        long[] result = new long[list.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = (long) list.get(i);
-        }
-
-        return result;
-
+        List<Long> list = ArmstrongNumbersMultiSetLongOpt.generate((int) (Math.log10(N)));
+        return list.stream().mapToLong(l->l).toArray();
     }
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        long[] list = getNumbers(Long.MAX_VALUE );
+        long[] list = getNumbers(8209 );
         long finish = System.currentTimeMillis();
-        System.out.println("Time consumed: " + (finish - start) + " ms");
-        System.out.println(list.length);
+        long memoryStart = Runtime.getRuntime().totalMemory();
+        long memoryEnd = Runtime.getRuntime().freeMemory();
+
+        System.out.println("Time: " + (finish - start) + " ms");
+        System.out.println("List items: " + list.length);
+        System.out.println("Memory: " + (memoryStart - memoryEnd) / 1024 + "kb");
+
         System.out.println(Arrays.toString(list));
+
+        System.out.println((int) Math.log10(Long.MAX_VALUE)+1);
     }
 
     public static class ArmstrongNumbersMultiSetLongOpt {
