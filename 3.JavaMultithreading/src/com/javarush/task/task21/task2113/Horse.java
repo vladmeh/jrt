@@ -14,8 +14,8 @@ public class Horse {
     }
 
     public void move(){
-        //setDistance(getDistance() + getSpeed()*Math.random());
-        distance += speed * Math.random();
+        setDistance(getDistance() + getSpeed()*Math.random());
+        //distance += speed * Math.random();
     }
 
     public void print(){

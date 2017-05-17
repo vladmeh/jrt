@@ -18,6 +18,8 @@ public class Hippodrome {
 
         game = new Hippodrome(horses);
         game.run();
+
+        game.printWinner();
     }
 
     public Hippodrome(List<Horse> horses) {
@@ -42,6 +44,23 @@ public class Hippodrome {
         for (int i = 0; i < 10; i++) {
             System.out.println();
         }
+    }
+
+    public Horse getWinner(){
+        Horse winner = null;
+        double distance = getHorses().get(0).getDistance();
+        for (int i = 0; i < horses.size(); i++) {
+            if (getHorses().get(i).getDistance() > distance){
+                winner = getHorses().get(i);
+                distance = winner.getDistance();
+            }
+        }
+
+        return winner;
+    }
+
+    public void printWinner(){
+        System.out.println("Winner is " + getWinner().getName() + "!");
     }
 
     public List<Horse> getHorses() {
