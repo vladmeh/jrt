@@ -2,6 +2,8 @@ package com.javarush.task.task23.task2312;
 
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Основной класс программы.
@@ -95,9 +97,32 @@ public class Room {
      */
     public void print() {
         //Создаем массив, куда будем "рисовать" текущее состояние игры
+        int[][] matrix = new int[height][width];
+
         //Рисуем все кусочки змеи
+        List<SnakeSection> sections = new ArrayList<>(snake.getSections());
+        for (SnakeSection snakeSection : sections)
+        {
+            matrix[snakeSection.getY()][snakeSection.getX()] = 1;
+        }
+
+        //Рисуем голову змеи (4 - если змея мертвая)
+        matrix[snake.getSections().get(0).getY()][snake.getSections().get(0).getX()] = 2;
+
         //Рисуем мышь
+        matrix[mouse.getY()][mouse.getX()] = 3;
+
         //Выводим все это на экран
+        String[] symbols = {".", "x", "X", "^"};
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                System.out.print(symbols[matrix[y][x]]);
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
     /**
