@@ -8,6 +8,8 @@ public class Room {
     private Snake snake;
     private Mouse mouse;
 
+    public static Room game;
+
 
     public Room(int width, int height, Snake snake) {
         this.width = width;
@@ -16,8 +18,13 @@ public class Room {
     }
 
     public static void main(String[] args) {
-
+        Snake snake = new Snake(5, 6);
+        snake.setDirection(SnakeDirection.DOWN);
+        game = new Room(10, 10, snake);
     }
+
+    public void run(){}
+    public void print(){}
 
     public int getWidth() {
         return width;
