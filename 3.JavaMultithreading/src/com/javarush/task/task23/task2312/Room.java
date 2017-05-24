@@ -23,6 +23,17 @@ public class Room {
         game = new Room(10, 10, snake);
     }
 
+    public void createMouse(){
+        int x = (int)(Math.random() * width);
+        int y = (int)(Math.random() * height);
+
+        setMouse(new Mouse(x,y));
+    }
+
+    public void eatMouse(){
+        createMouse();
+    }
+
     public void run(){}
     public void print(){}
 
