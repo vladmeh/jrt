@@ -1,31 +1,53 @@
 package com.javarush.task.task23.task2312;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by mvl on 24.05.2017.
+ * Класс змея
  */
 public class Snake {
-    private List<SnakeSection> sections;
-    private boolean isAlive;
+    //Направление движения змеи
     private SnakeDirection direction;
+    //Состояние - жива змея или нет.
+    private boolean isAlive;
+    //Список кусочков змеи.
+    private ArrayList<SnakeSection> sections;
 
     public Snake(int x, int y) {
-        sections = new ArrayList<>();
+        sections = new ArrayList<SnakeSection>();
         sections.add(new SnakeSection(x, y));
         isAlive = true;
     }
 
-    public int getX(){
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public int getX() {
         return sections.get(0).getX();
     }
 
-    public int getY(){
+    public int getY() {
         return sections.get(0).getY();
     }
 
-    public void move(){
+    public SnakeDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(SnakeDirection direction) {
+        this.direction = direction;
+    }
+
+    public ArrayList<SnakeSection> getSections() {
+        return sections;
+    }
+
+    /**
+     * Метод перемещает змею на один ход.
+     * Направление перемещения задано переменной direction.
+     */
+    public void move() {
         if (!isAlive) return;
 
         if (direction == SnakeDirection.UP)
@@ -38,7 +60,11 @@ public class Snake {
             move(-1, 0);
     }
 
-    public void move(int dx, int dy){
+    /**
+     * Метод перемещает змею в соседнюю клетку.
+     * Координаты клетки заданы относительно текущей головы с помощью переменных (dx, dy).
+     */
+    private void move(int dx, int dy) {
         //Создаем новую голову - новый "кусочек змеи".
         SnakeSection head = sections.get(0);
         head = new SnakeSection(head.getX() + dx, head.getY() + dy);
@@ -53,59 +79,32 @@ public class Snake {
 
         //Проверяем - не съела ли змея мышь.
         Mouse mouse = Room.game.getMouse();
-        //съела
-        if (head.getX() == mouse.getX() && head.getY() == mouse.getY())
+        if (head.getX() == mouse.getX() && head.getY() == mouse.getY()) //съела
         {
-            //Добавили новую голову
-            sections.add(0, head);
-            //Хвот не удаляем, но создаем новую мышь.
-            Room.game.eatMouse();
-        }
-        //просто движется
-        else
+            sections.add(0, head);                  //Добавили новую голову
+            Room.game.eatMouse();                   //Хвот не удаляем, но создаем новую мышь.
+        } else //просто движется
         {
-            //добавили новую голову
-            sections.add(0, head);
-            //удалили последний элемент с хвоста
-            sections.remove(sections.size() - 1);
+            sections.add(0, head);                  //добавили новую голову
+            sections.remove(sections.size() - 1);   //удалили последний элемент с хвоста
         }
     }
 
     /**
-     *  Метод проверяет - находится ли новая голова в пределах комнаты
+     * Метод проверяет - находится ли новая голова в пределах комнаты
      */
-    public void checkBorders(SnakeSection head)
-    {
-        if ((head.getX() < 0 || head.getX() >= Room.game.getWidth()) || head.getY() < 0 || head.getY() >= Room.game.getHeight())
-        {
+    private void checkBorders(SnakeSection head) {
+        if ((head.getX() < 0 || head.getX() >= Room.game.getWidth()) || head.getY() < 0 || head.getY() >= Room.game.getHeight()) {
             isAlive = false;
         }
     }
 
     /**
-     *  Метод проверяет - не совпадает ли голова с каким-нибудь участком тела змеи.
+     * Метод проверяет - не совпадает ли голова с каким-нибудь участком тела змеи.
      */
-    public void checkBody(SnakeSection head)
-    {
-        if (sections.contains(head))
-        {
+    private void checkBody(SnakeSection head) {
+        if (sections.contains(head)) {
             isAlive = false;
         }
-    }
-
-    public List<SnakeSection> getSections() {
-        return sections;
-    }
-
-    public boolean isAlive() {
-        return isAlive;
-    }
-
-    public SnakeDirection getDirection() {
-        return direction;
-    }
-
-    public void setDirection(SnakeDirection direction) {
-        this.direction = direction;
     }
 }

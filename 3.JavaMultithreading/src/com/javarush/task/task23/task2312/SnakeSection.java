@@ -21,18 +21,20 @@ public class SnakeSection {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SnakeSection)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         SnakeSection that = (SnakeSection) o;
 
-        if (getX() != that.getX()) return false;
-        return getY() == that.getY();
+        if (x != that.x) return false;
+        if (y != that.y) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = getX();
-        result = 31 * result + getY();
+        int result = x;
+        result = 31 * result + y;
         return result;
     }
 }
