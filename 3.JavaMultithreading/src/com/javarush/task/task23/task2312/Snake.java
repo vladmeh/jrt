@@ -40,6 +40,28 @@ public class Snake {
 
     public void move(int x, int y){}
 
+    /**
+     *  Метод проверяет - находится ли новая голова в пределах комнаты
+     */
+    public void checkBorders(SnakeSection head)
+    {
+        if ((head.getX() < 0 || head.getX() >= Room.game.getWidth()) || head.getY() < 0 || head.getY() >= Room.game.getHeight())
+        {
+            isAlive = false;
+        }
+    }
+
+    /**
+     *  Метод проверяет - не совпадает ли голова с каким-нибудь участком тела змеи.
+     */
+    public void checkBody(SnakeSection head)
+    {
+        if (sections.contains(head))
+        {
+            isAlive = false;
+        }
+    }
+
     public List<SnakeSection> getSections() {
         return sections;
     }
