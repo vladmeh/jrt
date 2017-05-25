@@ -38,7 +38,38 @@ public class Snake {
             move(-1, 0);
     }
 
-    public void move(int x, int y){}
+    public void move(int dx, int dy){
+        //Создаем новую голову - новый "кусочек змеи".
+        SnakeSection head = sections.get(0);
+        head = new SnakeSection(head.getX() + dx, head.getY() + dy);
+
+        //Проверяем - не вылезла ли голова за границу комнаты
+        checkBorders(head);
+        if (!isAlive) return;
+
+        //Проверяем - не пересекает ли змея  саму себя
+        checkBody(head);
+        if (!isAlive) return;
+
+        //Проверяем - не съела ли змея мышь.
+        Mouse mouse = Room.game.getMouse();
+        //съела
+        if (head.getX() == mouse.getX() && head.getY() == mouse.getY())
+        {
+            //Добавили новую голову
+            sections.add(0, head);
+            //Хвот не удаляем, но создаем новую мышь.
+            Room.game.eatMouse();
+        }
+        //просто движется
+        else
+        {
+            //добавили новую голову
+            sections.add(0, head);
+            //удалили последний элемент с хвоста
+            sections.remove(sections.size() - 1);
+        }
+    }
 
     /**
      *  Метод проверяет - находится ли новая голова в пределах комнаты
