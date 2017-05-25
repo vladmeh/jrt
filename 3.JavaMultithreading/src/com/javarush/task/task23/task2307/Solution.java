@@ -27,6 +27,7 @@ public class Solution {
 
     public static void main(String[] args) {
         obj = new Solution.TEST();
+        obj = Solution.TEST;
         System.out.println(obj);
     }
 }
