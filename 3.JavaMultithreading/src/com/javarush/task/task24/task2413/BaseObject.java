@@ -3,13 +3,28 @@ package com.javarush.task.task24.task2413;
 /**
  * @autor mvl on 30.05.2017.
  */
-public class BaseObject {
+public abstract class BaseObject {
     private double x, y, radius;
 
     public BaseObject(double x, double y, double radius) {
         this.x = x;
         this.y = y;
         this.radius = radius;
+    }
+
+    public abstract void draw(Canvas canvas);
+
+    public abstract void move();
+
+    public boolean isIntersec(BaseObject o){
+        //расстояние между двумя точками на плоскости
+        double dx = x - o.x;
+        double dy = y - o.y;
+        //теорема Пифагора
+        double destination = Math.sqrt(dx * dx + dy * dy);
+
+        double destination2 = Math.max(radius, o.radius);
+        return destination <= destination2;
     }
 
     public double getX() {
