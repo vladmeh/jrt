@@ -1,19 +1,48 @@
 package com.javarush.task.task24.task2413;
 
 /**
- * @autor mvl on 30.05.2017.
+ * Класс-холст для отрисовки.
  */
 public class Canvas {
-    private int width, height;
+    //ширина и высота
+    private int width;
+    private int height;
+    //матрица, где рисуем. символ - это цвет.
     private char[][] matrix;
 
     public Canvas(int width, int height) {
         this.width = width;
         this.height = height;
-        this.matrix = new char[height+2][width+2];
+        this.matrix = new char[height + 2][width + 2];
     }
 
-    public void setPoint(double x, double y, char c){
+    /**
+     * Очищаем холст
+     */
+    void clear() {
+        this.matrix = new char[height + 2][width + 2];
+    }
+
+    /**
+     * Печатаем переданную фигуру в указанных координатах цветом c.
+     * Если переданный массив содержит единицы, то на холсте им будут соответствовать символы - с.
+     */
+    void drawMatrix(double x, double y, int[][] matrix, char c) {
+        int height = matrix.length;
+        int width = matrix[0].length;
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (matrix[i][j] == 1)
+                    setPoint(x + j, y + i, c);
+            }
+        }
+    }
+
+    /**
+     * Ставим одну точку на холсте с координатами (x,y) и цветом - c.
+     */
+    void setPoint(double x, double y, char c) {
         int x0 = (int) Math.round(x);
         int y0 = (int) Math.round(y);
         if (y0 < 0 || y0 >= matrix.length) return;
@@ -22,56 +51,36 @@ public class Canvas {
         matrix[y0][x0] = c;
     }
 
-    public void drawMatrix(double x, double y, int[][] matrix, char c){
-        int height = matrix.length;
-        int width = matrix[0].length;
+    /**
+     * Печатаем содержимое холста на экран.
+     */
+    void print() {
+        System.out.println();
 
-        for (int i = 0; i < height; i++)
-        {
-            for (int j = 0; j < width; j++)
-            {
-                if (matrix[i][j] == 1)
-                    setPoint(x + j, y + i, c);
-            }
-        }
-    }
-
-    public void clear(){
-        this.matrix = new char[height+2][width+2];
-    }
-
-    public void print(){
-        for (int i = 0; i < matrix.length; i++)
-        {
-            for (int j = 0; j < matrix[0].length; j++)
-            {
+        for (int i = 0; i < height + 2; i++) {
+            for (int j = 0; j < width + 2; j++) {
+                System.out.print(" ");
                 System.out.print(matrix[i][j]);
+                System.out.print(" ");
             }
+
             System.out.println();
         }
+
+        System.out.println();
+        System.out.println();
+        System.out.println();
     }
 
     public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
     public char[][] getMatrix() {
         return matrix;
-    }
-
-    public void setMatrix(char[][] matrix) {
-        this.matrix = matrix;
     }
 }
