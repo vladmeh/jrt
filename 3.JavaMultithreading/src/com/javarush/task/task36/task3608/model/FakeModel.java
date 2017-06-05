@@ -17,6 +17,11 @@ public class FakeModel implements Model {
     }
 
     @Override
+    public void loadUserById(long userId) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void loadUsers() {
         //test
         List<User> usrList = new ArrayList<>();
