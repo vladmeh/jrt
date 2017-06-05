@@ -12,6 +12,11 @@ public class FakeModel implements Model {
     private ModelData modelData = new ModelData();
 
     @Override
+    public void loadDeletedUsers() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void loadUsers() {
         //test
         List<User> usrList = new ArrayList<>();
