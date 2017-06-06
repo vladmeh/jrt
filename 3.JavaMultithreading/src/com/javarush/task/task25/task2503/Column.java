@@ -2,7 +2,6 @@ package com.javarush.task.task25.task2503;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeMap;
 
 public enum Column implements Columnable{
     Customer("Customer"),
