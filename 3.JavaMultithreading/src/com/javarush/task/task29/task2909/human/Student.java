@@ -22,10 +22,6 @@ public class Student extends UniversityPerson {
         this.averageGrade = averageGrade;
     }
 
-    public void printData() {
-        System.out.println("Студент: " + name);
-    }
-
     public void incAverageGradeBy01() {
         averageGrade += 0.1;
     }
@@ -55,5 +51,10 @@ public class Student extends UniversityPerson {
 
     public double getAverageGrade() {
         return averageGrade;
+    }
+
+    @Override
+    public String getPosition() {
+        return "Студент";
     }
 }

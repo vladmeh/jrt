@@ -12,7 +12,8 @@ public class Teacher extends UniversityPerson {
         this.numberOfStudents = numberOfStudents;
     }
 
-    public void printData() {
-        System.out.println("Преподаватель: " + name);
+    @Override
+    public String getPosition() {
+        return "Преподаватель";
     }
 }
