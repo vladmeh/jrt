@@ -5,8 +5,4 @@ public class Professor extends Teacher {
         super(name, age, numberOfStudents);
     }
 
-    public void live() {
-        teach();
-    }
-
 }
