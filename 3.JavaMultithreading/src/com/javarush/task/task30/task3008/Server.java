@@ -35,6 +35,42 @@ public class Server {
             this.socket = socket;
         }
 
+        @Override
+        public void run() {
+            // Выводить сообщение, что установлено новое соединение с удаленным адресом
+            ConsoleHelper.writeMessage("Установлено соединение с удаленным клиентом с адресом: " +
+                    socket.getRemoteSocketAddress());
+            String clientName = null;
+
+            // Создавать Connection, используя поле socket
+            try(Connection connection = new Connection(socket)){
+
+                // Вызывать метод, реализующий рукопожатие с клиентом, сохраняя имя нового клиента
+                clientName = serverHandshake(connection);
+
+                //Рассылать всем участникам чата информацию об имени присоединившегося участника
+                sendBroadcastMessage(new Message(MessageType.USER_ADDED, clientName));
+
+                //Сообщать новому участнику о существующих участниках.
+                sendListOfUsers(connection, clientName);
+
+                //Запускать главный цикл обработки сообщений сервером.
+                serverMainLoop(connection, clientName);
+
+
+            } catch (IOException | ClassNotFoundException e) {
+                ConsoleHelper.writeMessage("Error!");
+            }
+
+            // disconnecting client
+            if (clientName != null) {
+                connectionMap.remove(clientName);
+                sendBroadcastMessage(new Message(MessageType.USER_REMOVED, clientName));
+            }
+
+            ConsoleHelper.writeMessage(String.format("Соединение с удаленным адресом (%s) закрыто.", socket.getRemoteSocketAddress()));
+        }
+
         private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
             String name;
 
