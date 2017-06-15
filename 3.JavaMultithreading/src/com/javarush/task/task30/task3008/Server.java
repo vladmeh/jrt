@@ -62,6 +62,13 @@ public class Server {
             // Вернуть принятое имя в качестве возвращаемого значения
             return name;
         }
+
+        private void sendListOfUsers(Connection connection, String userName) throws IOException {
+            for (String clientName: connectionMap.keySet()){
+                if (!clientName.equals(userName))
+                    connection.send(new Message(MessageType.USER_ADDED, clientName));
+            }
+        }
     }
 
     public static void sendBroadcastMessage(Message message){
