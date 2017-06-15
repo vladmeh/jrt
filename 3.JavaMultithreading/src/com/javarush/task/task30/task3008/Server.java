@@ -34,6 +34,34 @@ public class Server {
         public Handler(Socket socket) {
             this.socket = socket;
         }
+
+        private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
+            String name;
+
+            // Если какая-то проверка не прошла, заново запросить имя клиента
+            while (true){
+                // Сформировать и отправить команду запроса имени пользователя
+                connection.send(new Message(MessageType.NAME_REQUEST));
+                // Получить ответ клиента
+                Message message = connection.receive();
+                // Проверить, что получена команда с именем пользователя
+                if (message.getType() == MessageType.USER_NAME){
+                    // Достать из ответа имя
+                    name = message.getData();
+                    // проверить, что оно не пустое и пользователь с таким именем еще не подключен
+                    if (!name.isEmpty() && !connectionMap.containsKey(name)){
+                        // Добавить нового пользователя и соединение с ним в connectionMap
+                        connectionMap.put(name, connection);
+                        // Отправить клиенту команду информирующую, что его имя принято
+                        connection.send(new Message(MessageType.NAME_ACCEPTED));
+                        break;
+                    }
+                }
+            }
+
+            // Вернуть принятое имя в качестве возвращаемого значения
+            return name;
+        }
     }
 
     public static void sendBroadcastMessage(Message message){
