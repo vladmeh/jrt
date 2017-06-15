@@ -17,23 +17,20 @@ public class SearchCopyFiles {
 
     public static void main(String[] args) throws IOException {
 
-        //final List<Path> result = new ArrayList<>();
-
         Files.walkFileTree(DIRECTORY, new SimpleFileVisitor<Path>() {
 
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 if (file.getFileName().toString().equals(MASK)) {
-                    //result.add(file);
+                    Path newd = Paths.get(file.getParent() + "/" + MASK_NEW);
+                    if (Files.notExists(newd)){
+                        System.out.println(newd);
+                        Files.copy(file, newd, StandardCopyOption.REPLACE_EXISTING);
+                    }
 
-                    Path newd = Paths.get(file.getParent().toString() + "/" + MASK_NEW);
-                    System.out.println(newd);
-                    Files.copy(file, newd, StandardCopyOption.REPLACE_EXISTING);
                 }
                 return FileVisitResult.CONTINUE;
             }
         });
-
-        //System.out.println(result);
     }
 }
