@@ -69,6 +69,28 @@ public class Server {
                     connection.send(new Message(MessageType.USER_ADDED, clientName));
             }
         }
+
+        private void serverMainLoop(Connection connection, String userName) throws IOException, ClassNotFoundException {
+
+            //Организовать бесконечный цикл
+            while (true){
+                // Принимать сообщение клиента
+                Message message = connection.receive();
+
+                // Если принятое сообщение – это текст
+                if (message.getType() == MessageType.TEXT){
+                    //  формировать новое текстовое сообщение
+                    String messageText = userName + ": " + message.getData();
+                    // Отправлять сформированное сообщение всем клиентам с помощью
+                    sendBroadcastMessage(new Message(MessageType.TEXT, messageText));
+                }
+                else {
+                    // Если принятое сообщение не является текстом, вывести сообщение об ошибке
+                    ConsoleHelper.writeMessage("Error!");
+                }
+            }
+
+        }
     }
 
     public static void sendBroadcastMessage(Message message){
