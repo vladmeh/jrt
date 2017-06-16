@@ -3,6 +3,7 @@ package com.javarush.task.task30.task3008.client;
 import com.javarush.task.task30.task3008.*;
 
 import java.io.IOException;
+import java.net.Socket;
 
 /**
  * @autor mvl on 15.06.2017.
@@ -17,6 +18,23 @@ public class Client {
     }
 
     public class SocketThread extends Thread{
+        public void run(){
+            String host = getServerAddress();
+            int port = getServerPort();
+
+            try {
+                Socket socket = new Socket(host, port);
+                Client.this.connection = new Connection(socket);
+
+                clientHandshake();
+
+                clientMainLoop();
+
+            } catch (IOException | ClassNotFoundException e) {
+                notifyConnectionStatusChanged(false);
+            }
+        }
+
         protected void processIncomingMessage(String message){
             ConsoleHelper.writeMessage(message);
         }
