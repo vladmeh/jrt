@@ -7,21 +7,18 @@ import com.javarush.task.task31.task3110.exception.PathIsNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/**
- * @autor mvl on 20.06.2017.
- */
 public class ZipExtractCommand extends ZipCommand {
     @Override
     public void execute() throws Exception {
-        try{
+        try {
             ConsoleHelper.writeMessage("Распаковка архива.");
 
             ZipFileManager zipFileManager = getZipFileManager();
 
-            ConsoleHelper.writeMessage("Введите полное имя директории для распаковки архива:");
+            ConsoleHelper.writeMessage("Введите путь для распаковки:");
             Path destinationPath = Paths.get(ConsoleHelper.readString());
-
             zipFileManager.extractAll(destinationPath);
+
             ConsoleHelper.writeMessage("Архив был распакован.");
 
         } catch (PathIsNotFoundException e) {
