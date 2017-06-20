@@ -10,3 +10,4 @@
 *.out
 *.tmp
 /lib/
+*.zip
