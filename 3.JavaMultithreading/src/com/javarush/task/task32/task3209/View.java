@@ -95,6 +95,11 @@ public class View extends JFrame implements ActionListener {
 
     /**
      * Инициализация представления.
+     *
+     * - инициализирует графический интерфейс
+     * - добавляет слушателя событий нашего окна (this)
+     * - устанавливает окно по центру экрана
+     * - показывает окно
      */
     public void init(){
         initGui();
@@ -112,7 +117,7 @@ public class View extends JFrame implements ActionListener {
     }
 
     /**
-     * Init menu bar.
+     * Инициализация меню.
      */
     public void initMenuBar(){
         JMenuBar menuBar = new JMenuBar();
@@ -129,7 +134,7 @@ public class View extends JFrame implements ActionListener {
     }
 
     /**
-     * Init editor.
+     * нинциализация панелей редактора.
      */
     public void initEditor(){
         htmlTextPane.setContentType("text/html");
@@ -142,7 +147,10 @@ public class View extends JFrame implements ActionListener {
     }
 
     /**
-     * Init gui.
+     * Инициализация графического интерфейса.
+     *
+     * - инициализирует редактор
+     * - @Todo pack()???
      */
     public void initGui(){
         initMenuBar();
