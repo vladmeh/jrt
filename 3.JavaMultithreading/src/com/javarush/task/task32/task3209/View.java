@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * The type View.
+ *
  * @autor mvl on 21.06.2017.
  */
 public class View extends JFrame implements ActionListener {
@@ -23,6 +25,9 @@ public class View extends JFrame implements ActionListener {
     private UndoManager undoManager = new UndoManager();
     private UndoListener undoListener = new UndoListener(undoManager);
 
+    /**
+     * Instantiates a new View.
+     */
     public View(){
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -37,14 +42,29 @@ public class View extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Gets controller.
+     *
+     * @return the controller
+     */
     public Controller getController() {
         return controller;
     }
 
+    /**
+     * Sets controller.
+     *
+     * @param controller the controller
+     */
     public void setController(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Gets undo listener.
+     *
+     * @return the undo listener
+     */
     public UndoListener getUndoListener() {
         return undoListener;
     }
@@ -73,6 +93,9 @@ public class View extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Инициализация представления.
+     */
     public void init(){
         initGui();
         FrameListener frameListener = new FrameListener(this);
@@ -81,10 +104,16 @@ public class View extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    /**
+     * Exit.
+     */
     public void exit(){
         controller.exit();
     }
 
+    /**
+     * Init menu bar.
+     */
     public void initMenuBar(){
         JMenuBar menuBar = new JMenuBar();
 
@@ -99,6 +128,9 @@ public class View extends JFrame implements ActionListener {
         getContentPane().add(menuBar, BorderLayout.NORTH);
     }
 
+    /**
+     * Init editor.
+     */
     public void initEditor(){
         htmlTextPane.setContentType("text/html");
         tabbedPane.addTab("HTML", new JScrollPane(htmlTextPane));
@@ -109,12 +141,18 @@ public class View extends JFrame implements ActionListener {
         getContentPane().add(tabbedPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Init gui.
+     */
     public void initGui(){
         initMenuBar();
         initEditor();
         pack();
     }
 
+    /**
+     * Selected tab changed.
+     */
     public void selectedTabChanged(){
         switch (tabbedPane.getSelectedIndex()){
             case 0:
@@ -128,14 +166,27 @@ public class View extends JFrame implements ActionListener {
         resetUndo();
     }
 
+    /**
+     * Can undo boolean.
+     *
+     * @return the boolean
+     */
     public boolean canUndo() {
         return undoManager.canUndo();
     }
 
+    /**
+     * Can redo boolean.
+     *
+     * @return the boolean
+     */
     public boolean canRedo() {
         return undoManager.canRedo();
     }
 
+    /**
+     * Undo.
+     */
     public void undo(){
         try{
             undoManager.undo();
@@ -145,6 +196,9 @@ public class View extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Redo.
+     */
     public void redo(){
         try{
             undoManager.redo();
@@ -154,23 +208,40 @@ public class View extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Reset undo.
+     */
     public void resetUndo(){
         undoManager.discardAllEdits();
     }
 
+    /**
+     * Is html tab selected boolean.
+     *
+     * @return the boolean
+     */
     public boolean isHtmlTabSelected(){
         return tabbedPane.getSelectedIndex() == 0;
     }
 
+    /**
+     * Select html tab.
+     */
     public void selectHtmlTab(){
         tabbedPane.setSelectedIndex(0);
         resetUndo();
     }
 
+    /**
+     * Update.
+     */
     public void update(){
         htmlTextPane.setDocument(controller.getDocument());
     }
 
+    /**
+     * Show about.
+     */
     public void showAbout(){
         JOptionPane.showMessageDialog(this, "HTMLEditor", "About", JOptionPane.INFORMATION_MESSAGE);
     }

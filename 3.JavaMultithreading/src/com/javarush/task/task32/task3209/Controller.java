@@ -38,7 +38,7 @@ public class Controller {
     }
 
     /**
-     * Init.
+     * Инициализация контроллера.
      */
     public void init(){
         createNewDocument();
