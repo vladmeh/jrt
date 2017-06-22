@@ -3,6 +3,7 @@ package com.javarush.task.task32.task3209;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import java.io.File;
+import java.io.StringReader;
 
 /**
  * @autor mvl on 21.06.2017.
@@ -41,5 +42,15 @@ public class Controller {
         document = (HTMLDocument) new HTMLEditorKit().createDefaultDocument();
         document.addUndoableEditListener(view.getUndoListener());
         view.update();
+    }
+
+    public void setPlainText(String text){
+        resetDocument();
+        StringReader reader = new StringReader(text);
+        try {
+            new HTMLEditorKit().read(reader, document, 0);
+        } catch (Exception e) {
+            ExceptionHandler.log(e);
+        }
     }
 }
