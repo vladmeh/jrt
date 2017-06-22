@@ -6,6 +6,8 @@ import javax.swing.text.html.HTMLEditorKit;
 import java.io.*;
 
 /**
+ * The type Controller.
+ *
  * @autor mvl on 21.06.2017.
  */
 public class Controller {
@@ -13,10 +15,20 @@ public class Controller {
     private HTMLDocument document;
     private File currentFile;
 
+    /**
+     * Instantiates a new Controller.
+     *
+     * @param view the view
+     */
     public Controller(View view) {
         this.view = view;
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         View view = new View();
         Controller controller = new Controller(view);
@@ -25,18 +37,32 @@ public class Controller {
         controller.init();
     }
 
+    /**
+     * Init.
+     */
     public void init(){
         createNewDocument();
     }
 
+    /**
+     * Exit.
+     */
     public void exit(){
         System.exit(0);
     }
 
+    /**
+     * Gets document.
+     *
+     * @return the document
+     */
     public HTMLDocument getDocument() {
         return document;
     }
 
+    /**
+     * Reset document.
+     */
     public void resetDocument(){
         if (document != null)
             document.removeUndoableEditListener(view.getUndoListener());
@@ -46,6 +72,11 @@ public class Controller {
         view.update();
     }
 
+    /**
+     * Set plain text.
+     *
+     * @param text the text
+     */
     public void setPlainText(String text){
         resetDocument();
         StringReader reader = new StringReader(text);
@@ -56,6 +87,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Get plain text string.
+     *
+     * @return the string
+     */
     public String getPlainText(){
         StringWriter stringWriter = new StringWriter();
         try {
@@ -67,6 +103,9 @@ public class Controller {
         return stringWriter.toString();
     }
 
+    /**
+     * Create new document.
+     */
     public void createNewDocument() {
         view.selectHtmlTab();
         resetDocument();
@@ -75,6 +114,9 @@ public class Controller {
         currentFile = null;
     }
 
+    /**
+     * Open document.
+     */
     public void openDocument() {
         view.selectHtmlTab();
         JFileChooser fileChooser = new JFileChooser();
@@ -94,6 +136,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Save document.
+     */
     public void saveDocument() {
         view.selectHtmlTab();
 
@@ -108,6 +153,9 @@ public class Controller {
         else saveDocumentAs();
     }
 
+    /**
+     * Save document as.
+     */
     public void saveDocumentAs() {
         view.selectHtmlTab();
         JFileChooser fileChooser = new JFileChooser();
