@@ -1,10 +1,9 @@
 package com.javarush.task.task32.task3209;
 
+import javax.swing.*;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
-import java.io.File;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 
 /**
  * @autor mvl on 21.06.2017.
@@ -82,9 +81,23 @@ public class Controller {
 
     public void saveDocument() {
 
+
     }
 
     public void saveDocumentAs() {
+        view.selectHtmlTab();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new HTMLFileFilter());
 
+        if (fileChooser.showSaveDialog(view) == JFileChooser.APPROVE_OPTION){
+            currentFile = fileChooser.getSelectedFile();
+            view.setTitle(currentFile.getName());
+
+            try(FileWriter fileWriter = new FileWriter(currentFile)) {
+                new HTMLEditorKit().write(fileWriter, document, 0, document.getLength());
+            } catch (Exception e) {
+                ExceptionHandler.log(e);
+            }
+        }
     }
 }
