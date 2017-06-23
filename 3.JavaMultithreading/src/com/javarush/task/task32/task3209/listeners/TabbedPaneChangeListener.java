@@ -7,6 +7,8 @@ import javax.swing.event.ChangeListener;
 
 /**
  * @autor mvl on 21.06.2017.
+ *
+ * Слушает и обрабатывает изменения состояния панели вкладок
  */
 public class TabbedPaneChangeListener implements ChangeListener{
     private View view;
