@@ -404,7 +404,7 @@ initEditor() и метод pack(), реализацию которого мы у
 
 
 
-#### HTML Editor (1)
+#### [HTML Editor (1)](https://github.com/vladmeh/jrt/commit/a4947685adfe99ed8b4cfb15ffb3d99179d85204?diff=unified)
 
 Сегодня мы напишем HTML редактор с графическим интерфейсом. В качестве библиотеки для
 создания графического интерфейса воспользуемся Swing. А в качестве архитектурного каркаса
@@ -424,8 +424,6 @@ HTMLDocument реализован в пакете javax.swing.text.html.
 6.	Добавь в класс View поле Controller controller.
 7.	Добавь в класс View сеттер и геттер для поля controller.
 8.	Добавь пустую реализацию метода, который объявлен в интерфейсе ActionListener.
-
-(https://github.com/vladmeh/jrt/commit/a4947685adfe99ed8b4cfb15ffb3d99179d85204?diff=unified)
 <hr/>
 
 
