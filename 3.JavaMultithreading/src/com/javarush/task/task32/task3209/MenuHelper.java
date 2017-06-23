@@ -11,7 +11,19 @@ import javax.swing.text.StyledEditorKit;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * The type Menu helper.
+ * Вспомогательный класс для инициализации и настройки меню.
+ */
 public class MenuHelper {
+    /**
+     * Add menu item j menu item.
+     *
+     * @param parent         the parent
+     * @param text           the text
+     * @param actionListener the action listener
+     * @return the j menu item
+     */
     public static JMenuItem addMenuItem(JMenu parent, String text, ActionListener actionListener) {
         JMenuItem menuItem = new JMenuItem(text);
         menuItem.addActionListener(actionListener);
@@ -19,18 +31,39 @@ public class MenuHelper {
         return menuItem;
     }
 
+    /**
+     * Add menu item j menu item.
+     *
+     * @param parent the parent
+     * @param text   the text
+     * @param action the action
+     * @return the j menu item
+     */
     public static JMenuItem addMenuItem(JMenu parent, String text, Action action) {
         JMenuItem menuItem = addMenuItem(parent, action);
         menuItem.setText(text);
         return menuItem;
     }
 
+    /**
+     * Add menu item j menu item.
+     *
+     * @param parent the parent
+     * @param action the action
+     * @return the j menu item
+     */
     public static JMenuItem addMenuItem(JMenu parent, Action action) {
         JMenuItem menuItem = new JMenuItem(action);
         parent.add(menuItem);
         return menuItem;
     }
 
+    /**
+     * Инициализация меню помощи.
+     *
+     * @param view    the view
+     * @param menuBar the menu bar
+     */
     public static void initHelpMenu(View view, JMenuBar menuBar) {
         JMenu helpMenu = new JMenu("Помощь");
         menuBar.add(helpMenu);
@@ -38,6 +71,12 @@ public class MenuHelper {
         addMenuItem(helpMenu, "О программе", view);
     }
 
+    /**
+     * Инициализация меню выбора шрифта.
+     *
+     * @param view    the view
+     * @param menuBar the menu bar
+     */
     public static void initFontMenu(View view, JMenuBar menuBar) {
         JMenu fontMenu = new JMenu("Шрифт");
         menuBar.add(fontMenu);
@@ -61,6 +100,13 @@ public class MenuHelper {
         fontMenu.addMenuListener(new TextEditMenuListener(view));
     }
 
+    /**
+     * Init color menu.
+     * Инициализация меню выбора цвета
+     *
+     * @param view    the view
+     * @param menuBar the menu bar
+     */
     public static void initColorMenu(View view, JMenuBar menuBar) {
         JMenu colorMenu = new JMenu("Цвет");
         menuBar.add(colorMenu);
@@ -77,6 +123,13 @@ public class MenuHelper {
         colorMenu.addMenuListener(new TextEditMenuListener(view));
     }
 
+    /**
+     * Init align menu.
+     * Инициализация меню выравнивания
+     *
+     * @param view    the view
+     * @param menuBar the menu bar
+     */
     public static void initAlignMenu(View view, JMenuBar menuBar) {
         JMenu alignMenu = new JMenu("Выравнивание");
         menuBar.add(alignMenu);
@@ -88,6 +141,13 @@ public class MenuHelper {
         alignMenu.addMenuListener(new TextEditMenuListener(view));
     }
 
+    /**
+     * Init style menu.
+     * Инициализация меню выбора стиля текста
+     *
+     * @param view    the view
+     * @param menuBar the menu bar
+     */
     public static void initStyleMenu(View view, JMenuBar menuBar) {
         JMenu styleMenu = new JMenu("Стиль");
         menuBar.add(styleMenu);
@@ -105,6 +165,13 @@ public class MenuHelper {
         styleMenu.addMenuListener(new TextEditMenuListener(view));
     }
 
+    /**
+     * Init edit menu.
+     * Инициализация меню редактирования текста
+     *
+     * @param view    the view
+     * @param menuBar the menu bar
+     */
     public static void initEditMenu(View view, JMenuBar menuBar) {
         JMenu editMenu = new JMenu("Редактировать");
         menuBar.add(editMenu);
@@ -118,6 +185,13 @@ public class MenuHelper {
         editMenu.addMenuListener(new UndoMenuListener(view, undoItem, redoItem));
     }
 
+    /**
+     * Init file menu.
+     * Инициализация меню Файл
+     *
+     * @param view    the view
+     * @param menuBar the menu bar
+     */
     public static void initFileMenu(View view, JMenuBar menuBar) {
         JMenu fileMenu = new JMenu("Файл");
         menuBar.add(fileMenu);
