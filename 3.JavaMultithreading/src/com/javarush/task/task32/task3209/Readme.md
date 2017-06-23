@@ -246,7 +246,7 @@ taskKey="com.javarush.task.task32.task3209.big06"
 <hr/>
 
 
-#### HTML Editor (7)
+#### [HTML Editor (7)](https://github.com/vladmeh/jrt/commit/78d3c6ddf80d3cedd81d1169d7f2c70a68c5ac05)
 
 Добавь класс MenuHelper. Это будет вспомогательный класс для инициализации и настройки меню.
 У меню будет следующая структура:
@@ -320,7 +320,7 @@ taskKey="com.javarush.task.task32.task3209.big06"
 <hr/>
 
 
-#### HTML Editor (6)
+#### [HTML Editor (6)](https://github.com/vladmeh/jrt/commit/b6a5ea2b305c68fad5c4372a8a1522b8506a88e5)
 
 Реализуй метод инициализации панелей редактора initEditor(). Он должен:
 
@@ -338,7 +338,7 @@ taskKey="com.javarush.task.task32.task3209.big06"
 
 
 
-#### HTML Editor (5)
+#### [HTML Editor (5)](https://github.com/vladmeh/jrt/commit/1c8f5a07e368d6a7204a916f65e3f3e4a2602fd2)
 
 1.  Объяви класс TabbedPaneChangeListener реализующий интерфейс ChangeListener в пакете listeners. Этот класс будет слушать и обрабатывать изменения состояния панели вкладок. Реализуй в этом классе:
     1.	Конструктор, принимающий представление в виде параметра и сохраняющий во внутреннее поле view класса.
@@ -349,7 +349,7 @@ taskKey="com.javarush.task.task32.task3209.big06"
 
 
 
-#### HTML Editor (4)
+#### [HTML Editor (4)](https://github.com/vladmeh/jrt/commit/5dd5d411378ecd80c239942c7edb34dbe8c7b7d2)
 
 1.	Объяви методы initMenuBar() и initEditor() в классе View. Они будут отвечать за инициализацию меню и панелей редактора.
 2.	Объяви в представлении метод initGui(). Он будет инициализировать графический интерфейс. Вызови из него инициализацию меню initMenuBar(), инициализацию редактора
@@ -364,7 +364,7 @@ initEditor() и метод pack(), реализацию которого мы у
 
 
 
-#### HTML Editor (3)
+#### [HTML Editor (3)](https://github.com/vladmeh/jrt/commit/0a5ca810bc53d710f18daa10930b70ba474c4ccf)
 
 Графический интерфейс будет представлять собой окно, в котором будет меню и панель с
 двумя вкладками.
