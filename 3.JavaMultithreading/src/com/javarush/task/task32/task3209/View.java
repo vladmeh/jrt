@@ -134,7 +134,15 @@ public class View extends JFrame implements ActionListener {
     }
 
     /**
-     * нинциализация панелей редактора.
+     * Инициализация панелей редактора.
+     *
+     * - устанавливает значение "text/html" в качестве типа контента для компонента htmlTextPane
+     * - добавляет Добавлять вкладку в панель tabbedPane с именем "HTML" и компонентом htmlTextPane
+     * - создает новый локальный компонент JScrollPane на базе plainTextPane
+     * - добавляет Добавлять еще одну вкладку в tabbedPane с именем "Текст" и компонентом plainTextPane
+     * - устанавливает предпочтительный размер панели tabbedPane
+     * - устанавливает в качестве слушателя изменений в tabbedPane объект класса TabbedPaneChangeListener
+     * - добавляет по центру панели контента текущего фрейма нашу панель с вкладками
      */
     public void initEditor(){
         htmlTextPane.setContentType("text/html");
