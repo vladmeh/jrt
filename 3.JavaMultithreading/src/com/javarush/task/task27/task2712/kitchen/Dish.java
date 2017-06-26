@@ -6,13 +6,24 @@ import java.util.Arrays;
  * @autor mvl on 26.06.2017.
  */
 public enum Dish {
-    Fish,
-    Steak,
-    Soup,
-    Juice,
-    Water;
+    Fish(25),
+    Steak(30),
+    Soup(15),
+    Juice(5),
+    Water(3);
+
+    private int duration;
+
+
+    Dish(int duration) {
+        this.duration = duration;
+    }
 
     public static String allDishesToString(){
         return Arrays.toString(values()).substring(1, Arrays.toString(values()).length() - 1);
+    }
+
+    public int getDuration() {
+        return duration;
     }
 }
