@@ -10,7 +10,7 @@ public class Solution {
     private static int numberA;
     private static int numberB;
 
-    public static String getAllNumbersBetween(int a, int b){
+    public static String getAllNumbersBetween(int a, int b) {
         StringBuilder result = new StringBuilder();
 
         long limit = (a <= b) ? (b - a + 1) : (a - b + 1);
