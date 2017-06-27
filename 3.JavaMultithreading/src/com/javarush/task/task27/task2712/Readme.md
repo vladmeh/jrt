@@ -9,22 +9,22 @@ taskKey="com.javarush.task.task27.task2712.big06"
 
 Это постоянные данные, поэтому для их хранения подходит энам.
 
-1. В пакете event создай enum EventType {COOKED_ORDER, SELECTED_VIDEOS, NO_AVAILABLE_VIDEO}
+1.  В пакете event создай enum EventType {COOKED_ORDER, SELECTED_VIDEOS, NO_AVAILABLE_VIDEO}
 
-2. В пакете event создай три класса, соответствующих значениям энама. Они будут (должны) представлять собой события.
+2.  В пакете event создай три класса, соответствующих значениям энама. Они будут (должны) представлять собой события.
 Мы будем регистрировать их экземпляры в хранилище.
 Имена классов с параметрами для конструкторов:
-2.1. CookedOrderEventDataRow(String tabletName, String cookName, int cookingTimeSeconds, List<Dish> cookingDishs)
-где — tabletName — имя планшета
-cookName — имя повара
-cookingTimeSeconds — время приготовления заказа в секундах
-cookingDishs — список блюд для приготовления
-2.2. NoAvailableVideoEventDataRow(int totalDuration)
-totalDuration — время приготовления заказа в секундах
-2.3. VideoSelectedEventDataRow(List<Advertisement> optimalVideoSet, long amount, int totalDuration)
-optimalVideoSet — список видео-роликов, отобранных для показа
-amount — сумма денег в копейках
-totalDuration — общая продолжительность показа отобранных рекламных роликов
+    1.  CookedOrderEventDataRow(String tabletName, String cookName, int cookingTimeSeconds, List<Dish> cookingDishs)
+        где — **tabletName** — имя планшета
+        **cookName** — имя повара
+        **cookingTimeSeconds** — время приготовления заказа в секундах
+        **cookingDishs** — список блюд для приготовления
+    2.  NoAvailableVideoEventDataRow(int totalDuration)
+        **totalDuration** — время приготовления заказа в секундах
+    3.  VideoSelectedEventDataRow(List<Advertisement> optimalVideoSet, long amount, int totalDuration)
+        **optimalVideoSet** — список видео-роликов, отобранных для показа
+        **amount** — сумма денег в копейках
+        **totalDuration** — общая продолжительность показа отобранных рекламных роликов
 3. В классы, созданные в п.2., добавьте поле Date currentDate, которое проинициализируй в конструкторе текущей датой.
 ***
 
