@@ -15,7 +15,8 @@ taskKey="com.javarush.task.task27.task2712.big06"
     Мы будем регистрировать их экземпляры в хранилище.
     Имена классов с параметрами для конструкторов:
     1.  CookedOrderEventDataRow(String tabletName, String cookName, int cookingTimeSeconds, List<Dish> cookingDishs)
-        где — **tabletName** — имя планшета
+        где 
+        - **tabletName** — имя планшета
         - **cookName** — имя повара
         - **cookingTimeSeconds** — время приготовления заказа в секундах
         - **cookingDishs** — список блюд для приготовления
