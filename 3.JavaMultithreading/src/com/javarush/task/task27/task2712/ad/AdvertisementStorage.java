@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The type Advertisement storage.
+ * Хранилище рекламных роликов
+ *
  * @autor mvl on 26.06.2017.
  */
 public class AdvertisementStorage {
@@ -11,6 +14,11 @@ public class AdvertisementStorage {
 
     private final List<Advertisement> videos = new ArrayList<>();
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static AdvertisementStorage getInstance() {
         return ourInstance;
     }
@@ -22,10 +30,22 @@ public class AdvertisementStorage {
         videos.add(new Advertisement(someContent, "Third Video", 400, 2, 10 * 60));   //10 min
     }
 
+    /**
+     * List list.
+     * Список всех существующих доступных видео
+     *
+     * @return the list
+     */
     public List<Advertisement> list(){
         return videos;
     }
 
+    /**
+     * Add.
+     * Добавляет новое видео в список
+     *
+     * @param advertisement the advertisement
+     */
     public void add(Advertisement advertisement){
         videos.add(advertisement);
     }
