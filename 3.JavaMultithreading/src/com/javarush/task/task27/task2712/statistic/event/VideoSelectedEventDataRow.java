@@ -11,11 +11,11 @@ import java.util.List;
  * @autor mvl on 27.06.2017.
  */
 public class VideoSelectedEventDataRow implements EventDataRow{
-    List<Advertisement> optimalVideoSet;
-    long amount;
-    int totalDuration;
+    private List<Advertisement> optimalVideoSet;
+    private long amount;
+    private int totalDuration;
 
-    Date currentDate;
+    private Date currentDate;
 
     /**
      * Instantiates a new Video selected event data row.
@@ -30,5 +30,10 @@ public class VideoSelectedEventDataRow implements EventDataRow{
         this.totalDuration = totalDuration;
 
         this.currentDate = new Date();
+    }
+
+    @Override
+    public EventType getType() {
+        return EventType.SELECTED_VIDEOS;
     }
 }

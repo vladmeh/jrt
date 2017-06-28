@@ -1,44 +1,40 @@
 package com.javarush.task.task27.task2712.ad;
 
 import com.javarush.task.task27.task2712.ConsoleHelper;
+import com.javarush.task.task27.task2712.statistic.StatisticManager;
+import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataRow;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * The type Advertisement manager.
- * Объект менеджера, который подбирает оптимальный набор роликов и их последовательность для каждого заказа.
- *
- * @autor mvl on 26.06.2017.
- */
 public class AdvertisementManager {
-    /**
-     * The Storage.
-     */
-    AdvertisementStorage storage = AdvertisementStorage.getInstance();
-
     private int timeSeconds;
 
-    /**
-     * Instantiates a new Advertisement manager.
-     *
-     * @param timeSeconds время выполнения заказа
-     */
+    private final AdvertisementStorage storage = AdvertisementStorage.getInstance();
+
     public AdvertisementManager(int timeSeconds) {
         this.timeSeconds = timeSeconds;
     }
 
-    /**
-     * Process videos.
-     *
-     * @throws NoVideoAvailableException the no video available exception
-     */
-    public void processVideos() throws NoVideoAvailableException {
-        if (storage.list().isEmpty())
-            throw new NoVideoAvailableException();
+    public void processVideos() throws NoVideoAvailableException{
+        List<Advertisement> candidates = new ArrayList<>();
+        //Include only compatible by duration video
+        for (Advertisement ad: storage.list()) {
+            if (ad.getDuration() <= timeSeconds && ad.getHits() > 0)
+                candidates.add(ad);
+        }
 
-        //Сортируем список доступных видео (п 9.2.4)
+        //If no one compatible
+        if (candidates.isEmpty()) {
+            throw new NoVideoAvailableException();
+        }
+
+        //Select optimal video set by exhaustive search
+        OptimalVideoSet optimalVideoSet = new OptimalVideoSet(candidates, timeSeconds);
+        List<Advertisement> optimalVideoList = optimalVideoSet.getOptimalVideoSet();
+        //Sort video playlist
         Collections.sort(storage.list(), (o1, o2) -> {
             //первичная сортировка - в порядке уменьшения стоимости показа одного рекламного ролика в копейках
             if (o1.getAmountPerOneDisplaying() != o2.getAmountPerOneDisplaying())
@@ -51,102 +47,90 @@ public class AdvertisementManager {
             return 0;
         });
 
-        List<Advertisement> advertisements = maxMany(storage.list());
+        //Register event before showing videos
+        StatisticManager.getInstance().register(
+                new VideoSelectedEventDataRow(
+                        optimalVideoList,
+                        optimalVideoSet.getOptimalVideoSetAmount(),
+                        optimalVideoSet.getOptimalVideoSetDuration()
+                )
+        );
 
-        if (advertisements.isEmpty())
-            throw new NoVideoAvailableException();
-
-        for (Advertisement advertisement : advertisements)
-        {
+        //Show videos & update ads' data
+        for (int i = 0; i < optimalVideoList.size(); i++) {
+            Advertisement advertisement = optimalVideoList.get(i);
             ConsoleHelper.writeMessage(String.format("%s is displaying... %d, %d",
                     advertisement.getName(),
                     advertisement.getAmountPerOneDisplaying(),
-                    advertisement.getAmountPerOneDisplaying() * 1000 / advertisement.getDuration()));
+                    (int)(advertisement.getAmountPerOneDisplaying() * 1000 / advertisement.getDuration())
+            ));
             advertisement.revalidate();
+
         }
     }
 
-    /**
-     * Рекурсивно подбирает список видео из доступных, просмотр которых обеспечивает максимальную выгоду
-     * т.е.
-     * - сумма денег, полученная от показов, максимальна из всех возможных вариантов
-     * - общее время показа не превышает время приготовления блюд текущего заказа
-     * - для одного заказа любой видеоролик показывается не более одного раза
-     */
-    private List<Advertisement> maxMany(List<Advertisement> advertisements) {
-        //общее время показа роликов в секундах
-        int timeD = 0;
-        //перебираем список доступных видео и определяем общее время показа роликов
-        for (Advertisement advertisement : advertisements)
-            timeD += advertisement.getDuration();
+    private class OptimalVideoSet  {
+        private int toShowTimeSeconds;
+        private CopyOnWriteArrayList<Advertisement> candidates_ = new CopyOnWriteArrayList<>();
 
-        //если общее время показа роликов превышает время приготовления заказа
-        if (timeD > timeSeconds) {
-            //отбираем ролики которые войдут в интервал времени приготовления заказа
-            List<Advertisement> adv = new ArrayList<>();
-            timeD = 0;
-            for (Advertisement el : advertisements) {
-                timeD += el.getDuration();
-                if (timeD <= timeSeconds)
-                    adv.add(el);
+        private int optimalVideoSetAmount = 0;
+        private int optimalVideoSetTime = 0;
+        private CopyOnWriteArrayList<Advertisement> optimalVideoSet;
 
+
+        public OptimalVideoSet(List<Advertisement> candidates, int toShowTimeSeconds) {
+            this.toShowTimeSeconds = toShowTimeSeconds;
+            this.candidates_.addAll(candidates);
+        }
+
+        public List<Advertisement> getOptimalVideoSet() {
+            sortOut(candidates_);
+            List<Advertisement> result = new ArrayList<>();
+            result.addAll(optimalVideoSet);
+            return result;
+        }
+
+        //exhaustive search
+        private void sortOut(CopyOnWriteArrayList<Advertisement> candidates) {
+            CopyOnWriteArrayList<Advertisement> currentList = candidates;
+            //Calculate current video set parameters
+            int amountOfAd = 0;
+            int sumOfAdTime = 0;
+            for (Advertisement ad : currentList) {
+                amountOfAd += ad.getAmountPerOneDisplaying();
+                sumOfAdTime += ad.getDuration();
             }
-
-            for (int i = 0; i < advertisements.size(); i++) {
-                List<Advertisement> list = new ArrayList<>(advertisements);
-                list.remove(i);
-                int timeD2 = 0;
-
-                for (Advertisement advertisement2 : list)
-                    timeD2 += advertisement2.getDuration();
-
-                if (timeD2 > timeSeconds)
-                    list = maxMany(list);
-
-                if (adv.size() > 0) {
-                    compareAd(adv, list);
+            //If video set is too long eliminate each video
+            // & invoke optimal set finding in recursion sequentially
+            if (sumOfAdTime > toShowTimeSeconds)
+                for (int i = currentList.size() - 1; i >= 0; i--) {
+                    candidates = (CopyOnWriteArrayList<Advertisement>) currentList.clone();
+                    candidates.remove(i);
+                    sortOut(candidates);
                 }
-                else {
-                    adv.addAll(list);
-                }
-            }
-            return adv;
-        } else {
-            return advertisements;
-        }
-    }
-
-
-    private void compareAd(List<Advertisement> advertisements, List<Advertisement> list) {
-        long sum = 0;
-        long sum2 = 0;
-        int sumt = 0;
-        int sumt2 = 0;
-        int k = 0;
-        int k2 = 0;
-        for (Advertisement el : advertisements) {
-            sum += el.getAmountPerOneDisplaying();
-            sumt += el.getDuration();
-            k++;
-        }
-        for (Advertisement el : list) {
-            sum2 += el.getAmountPerOneDisplaying();
-            sumt2 += el.getDuration();
-            k2++;
-        }
-        if (sum < sum2) {
-            advertisements.clear();
-            advertisements.addAll(list);
-        } else if (sum == sum2) {
-            if (sumt < sumt2) {
-                advertisements.clear();
-                advertisements.addAll(list);
-            } else if (sumt == sumt2) {
-                if (k > k2) {
-                    advertisements.clear();
-                    advertisements.addAll(list);
+            else {
+                //Replace optimal result if current set is better
+                if (amountOfAd > optimalVideoSetAmount) {
+                    optimalVideoSet = currentList;
+                } else if (amountOfAd == optimalVideoSetAmount)
+                    if (sumOfAdTime > optimalVideoSetTime)
+                        optimalVideoSet = currentList;
+                    else if (sumOfAdTime == optimalVideoSetTime)
+                        if (currentList.size() < optimalVideoSet.size())
+                            optimalVideoSet = currentList;
+                if (optimalVideoSet == currentList) {
+                    optimalVideoSetAmount = amountOfAd;
+                    optimalVideoSetTime = sumOfAdTime;
                 }
             }
+        }
+
+        public int getOptimalVideoSetDuration() {
+            return optimalVideoSetTime;
+        }
+
+        public int getOptimalVideoSetAmount() {
+            return optimalVideoSetAmount;
         }
     }
 }

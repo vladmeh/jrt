@@ -68,4 +68,8 @@ public class Advertisement {
         hits--;
         if (hits == 1) amountPerOneDisplaying += initialAmount % amountPerOneDisplaying;
     }
+
+    public int getHits() {
+        return hits;
+    }
 }
