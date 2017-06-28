@@ -12,7 +12,8 @@ import java.util.List;
  */
 public class CookedOrderEventDataRow implements EventDataRow{
 
-    private String tabletName, cookName;
+    private String tabletName;
+    private String cookName;
     private int cookingTimeSeconds;
     private List<Dish> cookingDishs;
 

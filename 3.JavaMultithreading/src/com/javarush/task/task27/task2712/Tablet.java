@@ -1,9 +1,10 @@
 package com.javarush.task.task27.task2712;
 
-import com.javarush.task.task27.task2712.ad.Advertisement;
 import com.javarush.task.task27.task2712.ad.AdvertisementManager;
 import com.javarush.task.task27.task2712.ad.NoVideoAvailableException;
 import com.javarush.task.task27.task2712.kitchen.Order;
+import com.javarush.task.task27.task2712.statistic.StatisticManager;
+import com.javarush.task.task27.task2712.statistic.event.NoAvailableVideoEventDataRow;
 
 import java.io.IOException;
 import java.util.Observable;
@@ -11,16 +12,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * The type Tablet.
+ *
  * @autor mvl on 26.06.2017.
  */
 public class Tablet extends Observable{
-    final int number;
+    private final int number;
     private static Logger logger = Logger.getLogger(Tablet.class.getName());
 
+    /**
+     * Instantiates a new Tablet.
+     *
+     * @param number номер планшета, что бы можно было установить откуда поступил заказ
+     */
     public Tablet(int number) {
         this.number = number;
     }
 
+    /**
+     * Create order order.
+     * Создает заказ из тех блюд, которые выбирает пользователь
+     *
+     * @return the order
+     */
     public Order createOrder(){
 
         Order order = null;
@@ -31,12 +45,15 @@ public class Tablet extends Observable{
 
             if (!order.isEmpty()) {
                 AdvertisementManager adm = new AdvertisementManager(order.getTotalCookingTime() * 60);
+
                 setChanged();
                 notifyObservers(order);
                 adm.processVideos();
             }
 
-        }catch (NoVideoAvailableException e) {
+        }
+        catch (NoVideoAvailableException e) {
+            StatisticManager.getInstance().register(new NoAvailableVideoEventDataRow(order.getTotalCookingTime()*60));
             logger.log(Level.INFO,"No video is available for the order " + order);
         }
         catch (IOException e) {
@@ -49,5 +66,9 @@ public class Tablet extends Observable{
     @Override
     public String toString() {
         return "Tablet{number=" + number + "}";
+    }
+
+    public int getNumber() {
+        return number;
     }
 }

@@ -43,6 +43,7 @@ public class Advertisement {
 
     /**
      * Gets duration.
+     * продолжительность одного показа в секундах
      *
      * @return the duration
      */
@@ -60,17 +61,13 @@ public class Advertisement {
         return amountPerOneDisplaying;
     }
 
-    public double getAmountPerSecond() {
-        return (double)amountPerOneDisplaying / duration;
-    }
-
     /**
      * Revalidate.
      */
     public void revalidate(){
         if (hits <= 0) throw new UnsupportedOperationException();
         hits--;
-        if (hits == 1) amountPerOneDisplaying += initialAmount % amountPerOneDisplaying;
+        //if (hits == 1) amountPerOneDisplaying += initialAmount % amountPerOneDisplaying;
     }
 
     public int getHits() {

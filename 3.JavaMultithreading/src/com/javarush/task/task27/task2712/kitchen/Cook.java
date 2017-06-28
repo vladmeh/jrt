@@ -22,6 +22,10 @@ public class Cook extends Observable implements Observer{
         return name;
     }
 
+    /**
+     * @param o объект, который отправил нам значение - Tablet
+     * @param arg само значение, в нашем случае - это объект Order
+     */
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof Order){

@@ -11,17 +11,23 @@ import java.util.List;
  */
 public class Order {
     private final Tablet tablet;
-    protected List<Dish> dishes;
+    private List<Dish> dishes;
 
     public Order(Tablet tablet) throws IOException {
         this.tablet = tablet;
         this.dishes = ConsoleHelper.getAllDishesForOrder();
     }
 
+    /**
+     * Get total cooking time int.
+     * Продолжительность приготовления всего заказа.
+     *
+     * @return the int
+     */
     public int getTotalCookingTime(){
         int totalTime = 0;
-        for (int i = 0; i < dishes.size(); i++) {
-            totalTime += dishes.get(i).getDuration();
+        for (Dish dish : dishes) {
+            totalTime += dish.getDuration();
         }
 
         return totalTime;
@@ -44,9 +50,5 @@ public class Order {
 
     public List<Dish> getDishes() {
         return dishes;
-    }
-
-    public Tablet getTablet() {
-        return tablet;
     }
 }
