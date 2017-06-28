@@ -1,11 +1,9 @@
 package com.javarush.task.task27.task2712.statistic;
 
+import com.javarush.task.task27.task2712.kitchen.Cook;
 import com.javarush.task.task27.task2712.statistic.event.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @autor mvl on 27.06.2017.
@@ -13,6 +11,7 @@ import java.util.Map;
 public class StatisticManager {
     private static StatisticManager ourInstance = new StatisticManager();
     private StatisticStorage statisticStorage = new StatisticStorage();
+    private Set<Cook> cooks = new HashSet<>();
 
     public static StatisticManager getInstance() {
         return ourInstance;
@@ -38,5 +37,9 @@ public class StatisticManager {
 
     public void register(EventDataRow data){
         statisticStorage.put(data);
+    }
+
+    public void register(Cook cook){
+        cooks.add(cook);
     }
 }
