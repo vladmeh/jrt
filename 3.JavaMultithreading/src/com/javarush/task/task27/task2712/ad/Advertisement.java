@@ -60,6 +60,10 @@ public class Advertisement {
         return amountPerOneDisplaying;
     }
 
+    public double getAmountPerSecond() {
+        return (double)amountPerOneDisplaying / duration;
+    }
+
     /**
      * Revalidate.
      */

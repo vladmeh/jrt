@@ -6,6 +6,7 @@ import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataR
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -35,17 +36,9 @@ public class AdvertisementManager {
         OptimalVideoSet optimalVideoSet = new OptimalVideoSet(candidates, timeSeconds);
         List<Advertisement> optimalVideoList = optimalVideoSet.getOptimalVideoSet();
         //Sort video playlist
-        Collections.sort(storage.list(), (o1, o2) -> {
-            //первичная сортировка - в порядке уменьшения стоимости показа одного рекламного ролика в копейках
-            if (o1.getAmountPerOneDisplaying() != o2.getAmountPerOneDisplaying())
-                return Long.compare(o2.getAmountPerOneDisplaying(), o1.getAmountPerOneDisplaying());
-
-            //вторичная сортировка - по увеличению стоимости показа одной секунды рекламного ролика в тысячных частях копейки.
-            if (o1.getAmountPerOneDisplaying() * 1000 / o1.getDuration() != o2.getAmountPerOneDisplaying() * 1000 / o2.getDuration())
-                return Long.compare(o1.getAmountPerOneDisplaying() * 1000 / o1.getDuration(), o2.getAmountPerOneDisplaying() * 1000 / o2.getDuration());
-
-            return 0;
-        });
+        Collections.sort(optimalVideoList, (o1, o2) -> (int) (o1.getAmountPerOneDisplaying() == o2.getAmountPerOneDisplaying()
+                ? (o1.getAmountPerSecond() - o2.getAmountPerSecond()) * 1000000
+                : o2.getAmountPerOneDisplaying() - o1.getAmountPerOneDisplaying()));
 
         //Register event before showing videos
         StatisticManager.getInstance().register(
