@@ -5,13 +5,13 @@ import com.javarush.task.task27.task2712.statistic.StatisticManager;
 import com.javarush.task.task27.task2712.statistic.event.CookedOrderEventDataRow;
 
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * @autor mvl on 26.06.2017.
  */
 public class Cook extends Observable{
     private final String name;
+    private boolean busy;
 
     public Cook(String name) {
         this.name = name;
@@ -23,8 +23,12 @@ public class Cook extends Observable{
     }
 
 
-    public void startCookingOrder(Order order){
+    public void startCookingOrder(Order order) throws InterruptedException {
+        busy = true;
         ConsoleHelper.writeMessage(String.format("Start cooking - %s, cooking time %dmin", order, order.getTotalCookingTime()));
+
+        Thread.sleep(order.getTotalCookingTime() * 10);
+
         StatisticManager.getInstance().register(
                 new CookedOrderEventDataRow(
                         order.getTablet().toString(),
@@ -36,5 +40,10 @@ public class Cook extends Observable{
 
         setChanged();
         notifyObservers(order);
+        busy = false;
+    }
+
+    public boolean isBusy() {
+        return busy;
     }
 }

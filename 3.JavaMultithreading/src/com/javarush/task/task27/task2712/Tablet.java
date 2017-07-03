@@ -39,7 +39,6 @@ public class Tablet extends Observable{
     public Order createOrder(){
 
         Order order = null;
-
         try {
             order = new Order(this);
             insideOrder(order);

@@ -21,10 +21,10 @@ public class RandomOrderGeneratorTask implements Runnable {
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 Tablet tablet = tablets.get((int) (Math.random() * tablets.size()));
-                tablet.createOrder();
+                tablet.createTestOrder();
                 Thread.sleep(interval);
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
     }
 }

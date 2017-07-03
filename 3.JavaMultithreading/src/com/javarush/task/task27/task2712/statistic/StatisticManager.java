@@ -24,7 +24,7 @@ public class StatisticManager {
     private StatisticManager() {
     }
 
-    private class StatisticStorage{
+    private class StatisticStorage {
         private Map<EventType, List<EventDataRow>> storage;
 
         private StatisticStorage() {
@@ -34,67 +34,70 @@ public class StatisticManager {
             }
         }
 
-        private void put(EventDataRow data){
+        private void put(EventDataRow data) {
             storage.get(data.getType()).add(data);
         }
 
-        private List<EventDataRow> get(EventType eventType){
+        private List<EventDataRow> get(EventType eventType) {
             return storage.get(eventType);
         }
     }
 
-    public void register(EventDataRow data){
+    public void register(EventDataRow data) {
         statisticStorage.put(data);
     }
 
-    public void register(Cook cook){
+    public void register(Cook cook) {
         cooks.add(cook);
     }
 
     public TreeMap<Date, Long> getAdvertisementProfit() {
-        TreeMap<Date,Long> map = new TreeMap<>(Collections.reverseOrder());
+        TreeMap<Date, Long> map = new TreeMap<>(Collections.reverseOrder());
         List<EventDataRow> videos = statisticStorage.get(EventType.SELECTED_VIDEOS);
 
-        for(EventDataRow eventDataRow: videos) {
+        for (EventDataRow eventDataRow : videos) {
             Date date = null;
             try {
                 date = simpleDateFormat.parse(simpleDateFormat.format(eventDataRow.getDate()));
-            } catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
             if (map.containsKey(date)) {
-                map.put(date,map.get(date)+((VideoSelectedEventDataRow)eventDataRow).getAmount());
+                map.put(date, map.get(date) + ((VideoSelectedEventDataRow) eventDataRow).getAmount());
             } else
-                map.put(date,((VideoSelectedEventDataRow)eventDataRow).getAmount());
+                map.put(date, ((VideoSelectedEventDataRow) eventDataRow).getAmount());
         }
 
         return map;
     }
 
     public TreeMap<Date, TreeMap<String, Integer>> getCookWorkLoading() {
-        TreeMap<Date, TreeMap<String,Integer>> map= new TreeMap<>(Collections.reverseOrder());
+        TreeMap<Date, TreeMap<String, Integer>> map = new TreeMap<>(Collections.reverseOrder());
         List<EventDataRow> list = statisticStorage.get(EventType.COOKED_ORDER);
 
-        for(EventDataRow eventDataRow: list) {
+        for (EventDataRow eventDataRow : list) {
             Date date = null;
             try {
                 date = simpleDateFormat.parse(simpleDateFormat.format(eventDataRow.getDate())); // дата без времени
-            } catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
             String cookName = ((CookedOrderEventDataRow) eventDataRow).getCookName();  // имя повара
-            int time = (int)Math.ceil(eventDataRow.getTime()/60.0);  // время в минутах
-            if(map.containsKey(date)) {
-                if(map.get(date).containsKey(cookName))
+            int time = (int) Math.ceil(eventDataRow.getTime() / 60.0);  // время в минутах
+            if (map.containsKey(date)) {
+                if (map.get(date).containsKey(cookName))
                     map.get(date).put(cookName, map.get(date).get(cookName) + time);
                 else map.get(date).put(cookName, time);
-            }
-            else {
+            } else {
                 TreeMap<String, Integer> tempMap = new TreeMap<>();
-                tempMap.put(cookName,time);
+                tempMap.put(cookName, time);
                 map.put(date, tempMap);
             }
         }
         return map;
+    }
+
+    public Set<Cook> getCooks() {
+        return cooks;
     }
 }

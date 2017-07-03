@@ -14,30 +14,34 @@ public class Restaurant {
     private static final int ORDER_CREATING_INTERVAL = 100;
 
     public static void main(String[] args) {
-
+        OrderManager orderManager = new OrderManager();
+        List<Tablet> tablets = new ArrayList<>();
 
         Cook cookAmigo = new Cook("Amigo");
         Cook cookDiego = new Cook("Diego");
+
         StatisticManager.getInstance().register(cookAmigo);
         StatisticManager.getInstance().register(cookDiego);
 
         Waiter waiter = new Waiter();
+
         cookAmigo.addObserver(waiter);
         cookDiego.addObserver(waiter);
 
-        OrderManager orderManager = new OrderManager();
-        List<Tablet> tablets = new ArrayList<>();
+        cookAmigo.addObserver(orderManager);
+        cookDiego.addObserver(orderManager);
+
         for (int i = 0; i < 5; i++) {
-            Tablet tablet = new Tablet(i + 1);
-            tablets.add(tablet);
+            tablets.add(new Tablet(i));
             tablets.get(i).addObserver(orderManager);
         }
 
-        Thread randomOrderGeneratorTaskThread = new Thread(new RandomOrderGeneratorTask(tablets, ORDER_CREATING_INTERVAL));
+        Thread randomOrderGeneratorTaskThread =
+                new Thread(new RandomOrderGeneratorTask(tablets, ORDER_CREATING_INTERVAL));
         randomOrderGeneratorTaskThread.start();
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
         randomOrderGeneratorTaskThread.interrupt();
 
