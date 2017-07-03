@@ -8,7 +8,7 @@ import com.javarush.task.task27.task2712.statistic.StatisticManager;
 import com.javarush.task.task27.task2712.statistic.event.NoAvailableVideoEventDataRow;
 
 import java.io.IOException;
-import java.util.Observable;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,9 +17,10 @@ import java.util.logging.Logger;
  *
  * @autor mvl on 26.06.2017.
  */
-public class Tablet extends Observable{
+public class Tablet {
     private final int number;
     private static Logger logger = Logger.getLogger(Tablet.class.getName());
+    private LinkedBlockingQueue<Order> queue;
 
     /**
      * Instantiates a new Tablet.
@@ -36,44 +37,42 @@ public class Tablet extends Observable{
      *
      * @return the order
      */
-    public Order createOrder(){
+    public Order createOrder() {
 
         Order order = null;
         try {
             order = new Order(this);
             insideOrder(order);
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
         }
 
         return order;
     }
 
-    public void createTestOrder(){
+    public void createTestOrder() {
         try {
-            Order order = new TestOrder(this);
+            final Order order = new TestOrder(this);
             insideOrder(order);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
         }
     }
 
     private void insideOrder(Order order) {
+        if (order.isEmpty()) return;
+        ConsoleHelper.writeMessage(order.toString());
         try {
-            ConsoleHelper.writeMessage(order.toString());
-            if (!order.isEmpty()) {
-                AdvertisementManager adm = new AdvertisementManager(order.getTotalCookingTime() * 60);
-
-                setChanged();
-                notifyObservers(order);
-                adm.processVideos();
-            }
+            queue.put(order);
+        } catch (InterruptedException e) {
+            return;
+        }
+        try {
+            new AdvertisementManager(order.getTotalCookingTime() * 60).processVideos();
         } catch (NoVideoAvailableException e) {
-            StatisticManager.getInstance().register(new NoAvailableVideoEventDataRow(order.getTotalCookingTime()*60));
-            logger.log(Level.INFO,"No video is available for the order " + order);
+            StatisticManager.getInstance().register(new NoAvailableVideoEventDataRow(order.getTotalCookingTime() * 60));
+            logger.log(Level.INFO, "No video is available for the order " + order);
         }
     }
 
@@ -84,5 +83,9 @@ public class Tablet extends Observable{
 
     public int getNumber() {
         return number;
+    }
+
+    public void setQueue(LinkedBlockingQueue<Order> queue) {
+        this.queue = queue;
     }
 }
