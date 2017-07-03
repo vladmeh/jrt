@@ -15,24 +15,22 @@ public class Restaurant {
 
     public static void main(String[] args) {
 
-        Waiter waiter = new Waiter();
+
         Cook cookAmigo = new Cook("Amigo");
-        cookAmigo.addObserver(waiter);
-
-        /*Tablet tablet = new Tablet(5);
-        tablet.addObserver(cook);
-        tablet.createOrder();*/
-
         Cook cookDiego = new Cook("Diego");
         StatisticManager.getInstance().register(cookAmigo);
         StatisticManager.getInstance().register(cookDiego);
 
+        Waiter waiter = new Waiter();
+        cookAmigo.addObserver(waiter);
+        cookDiego.addObserver(waiter);
+
+        OrderManager orderManager = new OrderManager();
         List<Tablet> tablets = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Tablet tablet = new Tablet(i + 1);
-            tablet.addObserver(cookAmigo);
-            tablet.addObserver(cookDiego);
             tablets.add(tablet);
+            tablets.get(i).addObserver(orderManager);
         }
 
         Thread randomOrderGeneratorTaskThread = new Thread(new RandomOrderGeneratorTask(tablets, ORDER_CREATING_INTERVAL));

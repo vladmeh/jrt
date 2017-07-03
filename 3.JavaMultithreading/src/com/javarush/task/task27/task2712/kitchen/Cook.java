@@ -10,7 +10,7 @@ import java.util.Observer;
 /**
  * @autor mvl on 26.06.2017.
  */
-public class Cook extends Observable implements Observer{
+public class Cook extends Observable{
     private final String name;
 
     public Cook(String name) {
@@ -22,27 +22,19 @@ public class Cook extends Observable implements Observer{
         return name;
     }
 
-    /**
-     * @param o объект, который отправил нам значение - Tablet
-     * @param arg само значение, в нашем случае - это объект Order
-     */
-    @Override
-    public void update(Observable o, Object arg) {
-        if (arg instanceof Order){
-            Order order = (Order) arg;
-            ConsoleHelper.writeMessage(String.format("Start cooking - %s, cooking time %dmin", order, order.getTotalCookingTime()));
 
-            StatisticManager.getInstance().register(
-                    new CookedOrderEventDataRow(
-                            o.toString(),
-                            this.toString(),
-                            order.getTotalCookingTime() * 60,
-                            order.getDishes()
-                    )
-            );
+    public void startCookingOrder(Order order){
+        ConsoleHelper.writeMessage(String.format("Start cooking - %s, cooking time %dmin", order, order.getTotalCookingTime()));
+        StatisticManager.getInstance().register(
+                new CookedOrderEventDataRow(
+                        order.getTablet().toString(),
+                        this.toString(),
+                        order.getTotalCookingTime() * 60,
+                        order.getDishes()
+                )
+        );
 
-            setChanged();
-            notifyObservers(order);
-        }
+        setChanged();
+        notifyObservers(order);
     }
 }
