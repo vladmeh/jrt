@@ -4,6 +4,7 @@ import com.javarush.task.task27.task2712.ConsoleHelper;
 import com.javarush.task.task27.task2712.Tablet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,11 +12,11 @@ import java.util.List;
  */
 public class Order {
     private final Tablet tablet;
-    private List<Dish> dishes;
+    protected List<Dish> dishes;
 
     public Order(Tablet tablet) throws IOException {
         this.tablet = tablet;
-        this.dishes = ConsoleHelper.getAllDishesForOrder();
+        initDishes();
     }
 
     /**
@@ -50,5 +51,9 @@ public class Order {
 
     public List<Dish> getDishes() {
         return dishes;
+    }
+
+    protected void initDishes() throws IOException {
+        this.dishes = ConsoleHelper.getAllDishesForOrder();
     }
 }

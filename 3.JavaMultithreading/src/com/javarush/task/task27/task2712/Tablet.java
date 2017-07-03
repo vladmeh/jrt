@@ -3,6 +3,7 @@ package com.javarush.task.task27.task2712;
 import com.javarush.task.task27.task2712.ad.AdvertisementManager;
 import com.javarush.task.task27.task2712.ad.NoVideoAvailableException;
 import com.javarush.task.task27.task2712.kitchen.Order;
+import com.javarush.task.task27.task2712.kitchen.TestOrder;
 import com.javarush.task.task27.task2712.statistic.StatisticManager;
 import com.javarush.task.task27.task2712.statistic.event.NoAvailableVideoEventDataRow;
 
@@ -41,8 +42,29 @@ public class Tablet extends Observable{
 
         try {
             order = new Order(this);
-            ConsoleHelper.writeMessage(order.toString());
+            insideOrder(order);
 
+        }
+        catch (IOException e) {
+            logger.log(Level.SEVERE, "Console is unavailable.");
+        }
+
+        return order;
+    }
+
+    public void createTestOrder(){
+        try {
+            Order order = new TestOrder(this);
+            insideOrder(order);
+        }
+        catch (IOException e) {
+            logger.log(Level.SEVERE, "Console is unavailable.");
+        }
+    }
+
+    private void insideOrder(Order order) {
+        try {
+            ConsoleHelper.writeMessage(order.toString());
             if (!order.isEmpty()) {
                 AdvertisementManager adm = new AdvertisementManager(order.getTotalCookingTime() * 60);
 
@@ -50,17 +72,10 @@ public class Tablet extends Observable{
                 notifyObservers(order);
                 adm.processVideos();
             }
-
-        }
-        catch (NoVideoAvailableException e) {
+        } catch (NoVideoAvailableException e) {
             StatisticManager.getInstance().register(new NoAvailableVideoEventDataRow(order.getTotalCookingTime()*60));
             logger.log(Level.INFO,"No video is available for the order " + order);
         }
-        catch (IOException e) {
-            logger.log(Level.SEVERE, "Console is unavailable.");
-        }
-
-        return order;
     }
 
     @Override
