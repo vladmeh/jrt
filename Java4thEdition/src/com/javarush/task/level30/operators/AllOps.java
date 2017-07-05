@@ -8,6 +8,9 @@ package com.javarush.task.level30.operators;
  * какие операции допускаются компилятором Java
  */
 public class AllOps {
+    public static void main(String[] args) {
+
+    }
     // To accept the results of a boolean test:
     void f(boolean b) {}
     void boolTest(boolean x, boolean y) {
