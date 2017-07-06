@@ -13,7 +13,7 @@ public class Model {
     private Tile[][] gameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
 
     /**
-     *  текущий счет
+     * текущий счет
      */
     int score;
 
@@ -51,8 +51,9 @@ public class Model {
      */
     private void addTile() {
         List<Tile> emptyTiles = getEmptyTiles();
-        emptyTiles.get((int) (Math.random() * emptyTiles.size())).value
-                = ((Math.random() < 0.9) ? 2 : 4);
+        if (emptyTiles.size() != 0)
+            emptyTiles.get((int) (Math.random() * emptyTiles.size())).value
+                    = ((Math.random() < 0.9) ? 2 : 4);
     }
 
     /**
@@ -76,26 +77,36 @@ public class Model {
      * т.е. ряд {4, 2, 0, 4} становится рядом {4, 2, 4, 0}
      *
      * @param tiles
+     * @return boolean
      */
-    private void compressTiles(Tile[] tiles){
+    private boolean compressTiles(Tile[] tiles) {
+        boolean compress = false;
+
         for (int i = 1; i < tiles.length; i++) {
             for (int j = 1; j < tiles.length; j++) {
                 if (tiles[j - 1].isEmpty() && !tiles[j].isEmpty()) {
+                    compress = true;
                     tiles[j - 1] = tiles[j];
                     tiles[j] = new Tile();
                 }
             }
         }
+
+        return compress;
     }
 
     /**
      * Слияние плиток одного номинала, т.е. ряд {4, 4, 2, 0} становится рядом {8, 2, 0, 0}.
      *
      * @param tiles
+     * @return boolean
      */
-    private void mergeTiles(Tile[] tiles){
+    private boolean mergeTiles(Tile[] tiles) {
+        boolean merge = false;
+
         for (int i = 1; i < tiles.length; i++) {
             if ((tiles[i - 1].value == tiles[i].value) && !tiles[i - 1].isEmpty() && !tiles[i].isEmpty()) {
+                merge = true;
                 tiles[i - 1].value *= 2;
                 score += tiles[i - 1].value;
                 maxTile = maxTile > tiles[i - 1].value ? maxTile : tiles[i - 1].value;
@@ -103,5 +114,15 @@ public class Model {
                 compressTiles(tiles);
             }
         }
+
+        return merge;
+    }
+
+    public void left() {
+        int j = 0;
+        for (Tile[] gameTile : gameTiles)
+            if (compressTiles(gameTile) | mergeTiles(gameTile)) j++;
+
+        if (j != 0) addTile();
     }
 }
