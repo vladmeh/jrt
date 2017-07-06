@@ -1,6 +1,7 @@
 package com.javarush.task.task35.task3513;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -125,4 +126,71 @@ public class Model {
 
         if (j != 0) addTile();
     }
+
+    public void up(){
+        rotate();
+        rotate();
+        rotate();
+        left();
+        rotate();
+    }
+
+    public void right(){
+        rotate();
+        rotate();
+        left();
+        rotate();
+        rotate();
+
+    }
+
+    public void down(){
+        rotate();
+        left();
+        rotate();
+        rotate();
+        rotate();
+    }
+
+    public void rotate() {
+        Tile[][] rotateGameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        for (int i = 0; i < FIELD_WIDTH; i++)
+        {
+            for (int j = 0; j < FIELD_WIDTH; j++)
+            {
+                rotateGameTiles[j][FIELD_WIDTH-1-i] = gameTiles[i][j];
+            }
+        }
+        gameTiles = rotateGameTiles;
+    }
+
+    /*public static void main(String[] args) {
+        Model model = new Model();
+        printModel(model);
+
+        model.left();
+        System.out.println("\nleft");
+        printModel(model);
+
+        model.up();
+        System.out.println("\nup");
+        printModel(model);
+
+        model.right();
+        System.out.println("\nright");
+        printModel(model);
+
+        model.down();
+        System.out.println("\ndown");
+        printModel(model);
+    }
+
+    private static void printModel(Model model) {
+        for (Tile[] gameTile : model.gameTiles) {
+            for (Tile tile : gameTile) {
+                System.out.printf("[%d]", tile.value);
+            }
+            System.out.println();
+        }
+    }*/
 }
