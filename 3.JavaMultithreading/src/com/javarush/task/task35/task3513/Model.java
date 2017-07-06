@@ -23,6 +23,10 @@ public class Model {
      */
     int maxTile;
 
+    public Tile[][] getGameTiles() {
+        return gameTiles;
+    }
+
     /**
      * Instantiates a new Model.
      */
@@ -152,7 +156,10 @@ public class Model {
         rotate();
     }
 
-    public void rotate() {
+    /**
+     * классический поворот двумерного массива по часовой стрелке
+     */
+    private void rotate() {
         Tile[][] rotateGameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
         for (int i = 0; i < FIELD_WIDTH; i++)
         {
@@ -162,6 +169,27 @@ public class Model {
             }
         }
         gameTiles = rotateGameTiles;
+    }
+
+    public boolean canMove(){
+        if (!getEmptyTiles().isEmpty())
+            return true;
+
+        for (Tile[] gameTile : gameTiles) {
+            for (int j = 1; j < gameTiles.length; j++) {
+                if (gameTile[j].value == gameTile[j - 1].value)
+                    return true;
+            }
+        }
+
+        for(int j = 0; j < gameTiles.length; j++) {
+            for(int i = 1; i < gameTiles.length; i++) {
+                if(gameTiles[i][j].value == gameTiles[i-1][j].value)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     /*public static void main(String[] args) {
