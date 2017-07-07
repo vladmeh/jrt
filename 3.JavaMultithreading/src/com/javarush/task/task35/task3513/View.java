@@ -33,11 +33,11 @@ public class View extends JPanel {
 
         g.drawString("Score: " + controller.getScore(), 140, 465);
 
-        if (isGameWon) {
+        /*if (isGameWon) {
             JOptionPane.showMessageDialog(this, "You've won!");
         } else if(isGameLost) {
             JOptionPane.showMessageDialog(this, "You've lost :(");
-        }
+        }*/
     }
 
     private void drawTile(Graphics g2, Tile tile, int x, int y) {

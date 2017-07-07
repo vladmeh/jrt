@@ -1,5 +1,6 @@
 package com.javarush.task.task35.task3513;
 
+import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -37,7 +38,11 @@ public class Controller extends KeyAdapter {
 
     public void keyPressed(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.VK_ESCAPE) resetGame();
-        if (!model.canMove()) view.isGameLost = true;
+        if (!model.canMove()){
+            view.isGameLost = true;
+            JOptionPane.showMessageDialog(view, "You've lost :(");
+            resetGame();
+        }
         if (!view.isGameLost && !view.isGameWon) {
             switch (event.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
@@ -54,7 +59,11 @@ public class Controller extends KeyAdapter {
                     break;
             }
         }
-        if (model.maxTile == WINNING_TILE) view.isGameWon = true;
+        if (model.maxTile == WINNING_TILE){
+            view.isGameWon = true;
+            JOptionPane.showMessageDialog(view, "You've won!");
+            resetGame();
+        }
         view.repaint();
     }
 }

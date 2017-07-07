@@ -1,8 +1,8 @@
 package com.javarush.task.task35.task3513;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * The type Model.
@@ -12,6 +12,10 @@ import java.util.List;
 public class Model {
     private static final int FIELD_WIDTH = 4;
     private Tile[][] gameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+
+    private Stack<Tile[][]> previousStates = new Stack<>();
+    private Stack<Integer> previousScores = new Stack<>();
+    private boolean isSaveNeeded;
 
     /**
      * текущий счет
@@ -32,6 +36,7 @@ public class Model {
      */
     public Model() {
         resetGameTiles();
+        this.isSaveNeeded = true;
     }
 
     /**
@@ -131,7 +136,7 @@ public class Model {
         if (j != 0) addTile();
     }
 
-    public void up(){
+    public void up() {
         rotate();
         rotate();
         rotate();
@@ -139,7 +144,7 @@ public class Model {
         rotate();
     }
 
-    public void right(){
+    public void right() {
         rotate();
         rotate();
         left();
@@ -148,7 +153,7 @@ public class Model {
 
     }
 
-    public void down(){
+    public void down() {
         rotate();
         left();
         rotate();
@@ -161,17 +166,15 @@ public class Model {
      */
     private void rotate() {
         Tile[][] rotateGameTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
-        for (int i = 0; i < FIELD_WIDTH; i++)
-        {
-            for (int j = 0; j < FIELD_WIDTH; j++)
-            {
-                rotateGameTiles[j][FIELD_WIDTH-1-i] = gameTiles[i][j];
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                rotateGameTiles[j][FIELD_WIDTH - 1 - i] = gameTiles[i][j];
             }
         }
         gameTiles = rotateGameTiles;
     }
 
-    public boolean canMove(){
+    public boolean canMove() {
         if (!getEmptyTiles().isEmpty())
             return true;
 
@@ -182,13 +185,41 @@ public class Model {
             }
         }
 
-        for(int j = 0; j < gameTiles.length; j++) {
-            for(int i = 1; i < gameTiles.length; i++) {
-                if(gameTiles[i][j].value == gameTiles[i-1][j].value)
+        for (int j = 0; j < gameTiles.length; j++) {
+            for (int i = 1; i < gameTiles.length; i++) {
+                if (gameTiles[i][j].value == gameTiles[i - 1][j].value)
                     return true;
             }
         }
 
         return false;
+    }
+
+    public void saveState(Tile[][] tiles) {
+        Tile[][] newTile = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                newTile[i][j] = new Tile();
+            }
+        }
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                newTile[i][j].value = tiles[i][j].value;
+            }
+        }
+        previousStates.push(newTile);
+        previousScores.push(score);
+        this.isSaveNeeded = false;
+    }
+
+    public void rollback() {
+        if (previousScores.isEmpty() | previousStates.isEmpty()) return;
+        score = previousScores.pop();
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            for (int j = 0; j < FIELD_WIDTH; j++) {
+                gameTiles[i][j].value = previousStates.peek()[i][j].value;
+            }
+        }
+        gameTiles = previousStates.pop();
     }
 }
