@@ -10,12 +10,12 @@ taskKey="com.javarush.task.task35.task3513.big06"
 У нашей игры (объекта типа JFrame) мы должны будем вызвать некоторые методы для того чтобы все корректно отображалось на экране:
 
 
-``java
-    game.setTitle("2048");
-    game.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    game.setSize(450, 500);
-    game.setResizable(false);
-``
+```java
+game.setTitle("2048");
+game.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+game.setSize(450, 500);
+game.setResizable(false);
+```
 game.add(controller.getView());
 
 
