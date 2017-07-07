@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 /**
  * @autor mvl on 05.07.2017.
  */
-public class Controller extends KeyAdapter{
+public class Controller extends KeyAdapter {
     private Model model;
     private View view;
     private static final int WINNING_TILE = 2048;
@@ -16,26 +16,30 @@ public class Controller extends KeyAdapter{
         this.view = new View(this);
     }
 
-    public Tile[][] getGameTiles(){
+    public View getView() {
+        return view;
+    }
+
+    public Tile[][] getGameTiles() {
         return model.getGameTiles();
     }
 
-    public int getScore(){
+    public int getScore() {
         return model.score;
     }
 
-    public void resetGame(){
+    public void resetGame() {
         model.score = 0;
         view.isGameWon = false;
         view.isGameLost = false;
         model.resetGameTiles();
     }
 
-    public void keyPressed(KeyEvent event){
+    public void keyPressed(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.VK_ESCAPE) resetGame();
         if (!model.canMove()) view.isGameLost = true;
-        if (!view.isGameLost && !view.isGameWon){
-            switch (event.getKeyCode()){
+        if (!view.isGameLost && !view.isGameWon) {
+            switch (event.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     model.left();
                     break;
