@@ -191,34 +191,4 @@ public class Model {
 
         return false;
     }
-
-    /*public static void main(String[] args) {
-        Model model = new Model();
-        printModel(model);
-
-        model.left();
-        System.out.println("\nleft");
-        printModel(model);
-
-        model.up();
-        System.out.println("\nup");
-        printModel(model);
-
-        model.right();
-        System.out.println("\nright");
-        printModel(model);
-
-        model.down();
-        System.out.println("\ndown");
-        printModel(model);
-    }
-
-    private static void printModel(Model model) {
-        for (Tile[] gameTile : model.gameTiles) {
-            for (Tile tile : gameTile) {
-                System.out.printf("[%d]", tile.value);
-            }
-            System.out.println();
-        }
-    }*/
 }
