@@ -1,5 +1,17 @@
 taskKey="com.javarush.task.task35.task3513.big06"
 
+#### 2048 (12)
+
+Ну что, попробуем наш алгоритм в действии? Осталось добавить сохранение игрового состояния в начало каждого метода движения, а также еще один кейс для обработки клавиши, которой будем выполнять отмену последнего хода.
+
+При сохранении текущего состояния в стек, обрати внимание на то, чтобы всегда сохранялось актуальное состояние и только однажды. Если ты послушал мой совет и реализовал методы right, up, down с помощью поворотов и вызова метода left, можешь использовать следующий подход:
+1. В самом начале методов right, up, down вызываем метод saveState с gameTiles в качестве параметра.
+2. В методе left организуем проверку того, вызывался ли уже метод saveState. За это у нас отвечает флаг isSaveNeeded, соответственно, если он равен true, выполняем сохранение. После выполнения сдвига влево устанавливаем флаг isSaveNeeded равным true.
+
+Также добавим в метод keyPressed класса Controller вызов метода rollback по нажатию на клавишу Z (код — KeyEvent.VK_Z).
+***
+
+
 #### 2048 (11)
 
 Отличная работа! На этом этапе у нас уже есть полнофункциональное приложение, но ведь нет предела совершенству, давай еще поработаем.
@@ -34,15 +46,22 @@ taskKey="com.javarush.task.task35.task3513.big06"
 
 
 ```java
-    game.setTitle("2048");
-    game.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    game.setSize(450, 500);
-    game.setResizable(false);
-    
-    game.add(controller.getView());
-    
-    game.setLocationRelativeTo(null);
-    game.setVisible(true);
+public class Main {
+    public static void main(String[] args){
+        
+        //@Todo...
+        
+        game.setTitle("2048");
+        game.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        game.setSize(450, 500);
+        game.setResizable(false);
+        
+        game.add(controller.getView());
+        
+        game.setLocationRelativeTo(null);
+        game.setVisible(true);
+    }
+}
 ```
 Обрати внимание на метод add в который мы передаем представление из контроллера. У нас еще нет геттера для поля view в классе Controller. Не забудь его добавить.
 
