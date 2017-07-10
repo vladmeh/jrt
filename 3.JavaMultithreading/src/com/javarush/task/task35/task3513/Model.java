@@ -129,7 +129,7 @@ public class Model {
     }
 
     public void left() {
-        if (isSaveNeeded)saveState(gameTiles);
+        if (isSaveNeeded) saveState(gameTiles);
         int j = 0;
         for (Tile[] gameTile : gameTiles)
             if (compressTiles(gameTile) | mergeTiles(gameTile)) j++;
@@ -229,14 +229,48 @@ public class Model {
         gameTiles = previousStates.pop();
     }
 
-    public void randomMove(){
+    public void randomMove() {
         int n = ((int) (Math.random() * 100)) % 4;
 
-        switch (n){
-            case 0: left(); break;
-            case 1: up(); break;
-            case 2: right(); break;
-            case 3: down(); break;
+        switch (n) {
+            case 0:
+                left();
+                break;
+            case 1:
+                up();
+                break;
+            case 2:
+                right();
+                break;
+            case 3:
+                down();
+                break;
         }
+    }
+
+    public boolean hasBoardChanged() {
+        int sum1 = 0;
+        int sum2 = 0;
+        if (!previousStates.isEmpty()) {
+            Tile[][] prevGameTiles = previousStates.peek();
+            for (int i = 0; i < FIELD_WIDTH; i++) {
+                for (int j = 0; j < FIELD_WIDTH; j++) {
+                    sum1 += gameTiles[i][j].value;
+                    sum2 += prevGameTiles[i][j].value;
+                }
+            }
+        }
+        return sum1 != sum2;
+    }
+
+    public MoveEfficiency getMoveEfficiency(Move move){
+        move.move();
+        MoveEfficiency moveEfficiency = new MoveEfficiency(getEmptyTiles().size(), score, move);
+        if (!hasBoardChanged())
+            moveEfficiency = new MoveEfficiency(-1, 0, move);
+
+        rollback();
+
+        return moveEfficiency;
     }
 }
