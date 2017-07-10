@@ -129,14 +129,18 @@ public class Model {
     }
 
     public void left() {
+        if (isSaveNeeded)saveState(gameTiles);
         int j = 0;
         for (Tile[] gameTile : gameTiles)
             if (compressTiles(gameTile) | mergeTiles(gameTile)) j++;
 
         if (j != 0) addTile();
+
+        isSaveNeeded = true;
     }
 
     public void up() {
+        saveState(gameTiles);
         rotate();
         rotate();
         rotate();
@@ -145,6 +149,7 @@ public class Model {
     }
 
     public void right() {
+        saveState(gameTiles);
         rotate();
         rotate();
         left();
@@ -154,6 +159,7 @@ public class Model {
     }
 
     public void down() {
+        saveState(gameTiles);
         rotate();
         left();
         rotate();
