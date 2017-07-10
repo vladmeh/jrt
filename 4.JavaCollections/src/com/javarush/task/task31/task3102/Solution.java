@@ -5,6 +5,7 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /* 
 Находим все файлы
@@ -20,12 +21,14 @@ public class Solution {
                 return FileVisitResult.CONTINUE;
             }
         });
-
         return list;
 
     }
 
-    public static void main(String[] args) {
-        
+    public static void main(String[] args) throws IOException {
+        List<Path> collect = Files.walk(Paths.get("./testFiles")).filter(Files::isRegularFile).collect(Collectors.toList());
+        for (Path path: collect){
+            System.out.println(path.toString());
+        }
     }
 }
