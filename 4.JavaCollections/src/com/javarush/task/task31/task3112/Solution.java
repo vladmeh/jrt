@@ -23,18 +23,18 @@ public class Solution {
     }
 
     public static Path downloadFile(String urlString, Path downloadDirectory) throws IOException {
-        String fileName = urlString.substring(urlString.lastIndexOf("/")+1);
+        String fileName = urlString.substring(urlString.lastIndexOf("/") + 1);
         Path resultFile = Paths.get(downloadDirectory + "/" + fileName);
 
         URL url = new URL(urlString);
         InputStream is = url.openStream();
 
-        Path tempFile = Files.createTempFile("temp-","");
-        Files.copy(is,tempFile);
+        Path tempFile = Files.createTempFile("temp-", "");
+        Files.copy(is, tempFile);
 
 
         is.close();
-        Files.move(tempFile,resultFile);
+        Files.move(tempFile, resultFile);
 
 
         return resultFile;
