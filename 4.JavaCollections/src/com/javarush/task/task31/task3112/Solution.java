@@ -32,10 +32,8 @@ public class Solution {
         Path tempFile = Files.createTempFile("temp-", "");
         Files.copy(is, tempFile);
 
-
         is.close();
         Files.move(tempFile, resultFile);
-
 
         return resultFile;
     }
