@@ -17,22 +17,11 @@ public class SearchFileVisitor extends SimpleFileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        boolean isPartOfName = true;
-        if (partOfName != null && !file.getFileName().toString().contains(partOfName))
-            isPartOfName = false;
-
-        boolean isPartOfContent = true;
+        boolean isPartOfName = partOfName != null && file.getFileName().toString().contains(partOfName);
         String content = new String(Files.readAllBytes(file));
-        if (partOfContent != null && !content.contains(partOfContent))
-            isPartOfContent = false;
-
-        boolean isMinSize = true;
-        if (minSize != -1 && Files.size(file) < minSize)
-            isMinSize = false;
-
-        boolean isMaxSize = true;
-        if (maxSize != -1 && Files.size(file) > maxSize)
-            isMaxSize = false;
+        boolean isPartOfContent = partOfContent != null && content.contains(partOfContent);
+        boolean isMinSize = minSize != -1 && Files.size(file) < minSize;
+        boolean isMaxSize = maxSize != -1 && Files.size(file) > maxSize;
 
         if (isPartOfName && isPartOfContent && isMinSize && isMaxSize)
             foundFiles.add(file);
