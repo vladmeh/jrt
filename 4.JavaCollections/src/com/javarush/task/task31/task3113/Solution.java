@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /* 
 Что внутри папки?
@@ -36,6 +34,7 @@ public class Solution {
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                     if (!dir.equals(folder))
                         countDir++;
+
                     return FileVisitResult.CONTINUE;
                 }
             });
