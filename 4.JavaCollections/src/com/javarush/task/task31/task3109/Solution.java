@@ -15,7 +15,7 @@ public class Solution {
         Properties properties = solution.getProperties("4.JavaCollections/src/com/javarush/task/task31/task3109/properties.xml");
         properties.list(System.out);
 
-        properties = solution.getProperties("4.JavaCollections/src/com/javarush/task/task31/task3109/properties.txt");
+        properties = solution.getProperties("4.JavaCollections/src/com/javarush/task/task31/task3109/properties.prop");
         properties.list(System.out);
 
         properties = solution.getProperties("4.JavaCollections/src/com/javarush/task/task31/task3109/notExists");
