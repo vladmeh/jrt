@@ -1,9 +1,6 @@
 package com.javarush.task.task31.task3105;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +20,7 @@ public class SolutionMy {
     private static Map<ZipEntry, byte[]> entryMap = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        /*if (args.length == 0) {
+        if (args.length == 0) {
             System.out.println("Uses ZIP compression to compress\nthe file to ./testFiles/test.zip");
             System.exit(1);
         }
@@ -41,10 +38,10 @@ public class SolutionMy {
         File file2 = new File("testFiles/Data.txt");
         Files.copy(file2.toPath(), zip);
 
-        zip.close();*/
+        zip.close();
 
 
-        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(args[1]))) {
+        /*try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(args[1]))) {
             ZipEntry zipEntry;
             while ((zipEntry = zipInputStream.getNextEntry()) != null) {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -71,7 +68,7 @@ public class SolutionMy {
             }
             zipOutputStream.putNextEntry(new ZipEntry("new/" + addFile.getFileName().toString()));
             Files.copy(addFile, zipOutputStream);
-        }
+        }*/
 
     }
 }
