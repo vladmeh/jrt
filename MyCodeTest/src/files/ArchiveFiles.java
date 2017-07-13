@@ -1,4 +1,4 @@
-package com.javarush.task.task31.task3105;
+package files;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,7 +15,7 @@ import java.util.zip.ZipOutputStream;
 /* 
 Добавление файла в архив
 */
-public class SolutionMy {
+public class ArchiveFiles {
     private static List<ZipEntry> list = new ArrayList<>();
     private static Map<ZipEntry, byte[]> entryMap = new HashMap<>();
 
@@ -37,6 +37,8 @@ public class SolutionMy {
         zip.putNextEntry(new ZipEntry("Data.txt"));
         File file2 = new File("testFiles/Data.txt");
         Files.copy(file2.toPath(), zip);
+
+        zip.putNextEntry(new ZipEntry("new/"));
 
         zip.close();
 
