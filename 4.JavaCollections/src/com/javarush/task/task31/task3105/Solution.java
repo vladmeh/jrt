@@ -22,9 +22,7 @@ public class Solution {
                 byte[] buffer = new byte[1024];
                 int count;
 
-                while ((count = zipInputStream.read(buffer)) != -1) {
-                    byteArrayOutputStream.write(buffer, 0, count);
-                }
+                while ((count = zipInputStream.read(buffer)) != -1) byteArrayOutputStream.write(buffer, 0, count);
                 byte[] bytes = byteArrayOutputStream.toByteArray();
                 entryMap.put(zipEntry.getName(), bytes);
             }
