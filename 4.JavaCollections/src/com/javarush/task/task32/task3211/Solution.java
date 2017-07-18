@@ -34,7 +34,7 @@ public class Solution {
         }
         BigInteger i = new BigInteger(1, bytes);
 
-        //Все это можно записать в однустрочку:
+        //Все это можно записать в одну строчку:
         //BigInteger i = new BigInteger(1, messageDigest.digest(byteArrayOutputStream.toByteArray()));
 
         String result = String.format("%032x", i);
