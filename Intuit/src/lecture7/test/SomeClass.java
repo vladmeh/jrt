@@ -1,4 +1,4 @@
-package objects;
+package lecture7.test;
 
 /**
  * @autor mvl on 18.07.2017.
