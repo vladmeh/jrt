@@ -13,6 +13,16 @@ public class Field {
         this.matrix = new int[height][width];
     }
 
+    public void print(){}
+
+    public void removeFullLines(){}
+
+    public Integer getValue(int x, int y){
+        return matrix[y][x];
+    }
+
+    public void setValue(int x, int y, int value){}
+
     public int getWidth() {
         return width;
     }
