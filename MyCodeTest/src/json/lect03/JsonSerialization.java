@@ -1,11 +1,11 @@
-package json;
+package json.lect03;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.StringWriter;
 
-public class ConvertToJson {
+public class JsonSerialization {
     public static void main(String[] args) throws IOException, IOException {
         //создание объекта для сериализации в JSON
         Cat cat = new Cat();

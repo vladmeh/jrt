@@ -1,4 +1,4 @@
-package json;
+package json.lect03;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
