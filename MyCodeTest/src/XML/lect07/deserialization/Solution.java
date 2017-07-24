@@ -3,6 +3,8 @@ package XML.lect07.deserialization;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.StringReader;
 
 /**
@@ -18,6 +20,13 @@ public class Solution {
 
         Cat cat = (Cat) unmarshaller.unmarshal(reader);
         System.out.println(cat.name + ", " + cat.age + ", " + cat.weight);
+    }
+
+    @XmlType(name = "cat")
+    @XmlRootElement
+    public static class Cat{
+        public String name;
+        public int age, weight;
     }
 }
 
