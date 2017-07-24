@@ -43,7 +43,6 @@ public class Solution {
     public static class Zoo
     {
         @XmlElementWrapper(name="wild-animals", nillable = true)
-
         public List<Cat> animals = new ArrayList<>();
     }
 
