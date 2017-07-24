@@ -24,9 +24,7 @@ public class Solution {
         JAXBContext context = JAXBContext.newInstance(clazz);
         Unmarshaller unmarshaller = context.createUnmarshaller();
 
-        T result = (T) unmarshaller.unmarshal(reader);
-
-        return result;
+        return (T) unmarshaller.unmarshal(reader);
     }
 
     @XmlType(name = "cat")
