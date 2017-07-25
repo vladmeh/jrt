@@ -1,4 +1,5 @@
-taskKey="com.javarush.task.task25.task2515.big06"
+>taskKey="com.javarush.task.task25.task2515.big06"
+***
 
 #### Space (7)
 
