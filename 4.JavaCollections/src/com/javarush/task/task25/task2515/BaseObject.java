@@ -41,4 +41,20 @@ public abstract class BaseObject {
         this.radius = radius;
         this.isAlive = true;
     }
+
+    public void draw(){}
+
+    public void move(){}
+
+    public void die(){
+        this.isAlive = false;
+    }
+
+    public boolean isIntersect(BaseObject o){
+        //расстояние между двумя точками на плоскости
+        double dx = x - o.x;
+        double dy = y - o.y;
+
+        return Math.sqrt(dx * dx + dy * dy) < Math.max(radius, o.radius);
+    }
 }
