@@ -25,7 +25,9 @@ Bomb унаследован от BaseObject.
 *   метод draw(Canvas canvas):
     тут тоже не очень сложная логика.
     Давай просто ставить точку с координатами (x,y) и «цветом» B:
-    ```canvas.setPoint(x,y,’B’).```
+    ```
+    canvas.setPoint(x,y,’B’).
+    ```
 
 *   Создай в классе Space нашу игру public static Space game.
 ***
