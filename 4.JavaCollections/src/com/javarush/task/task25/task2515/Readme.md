@@ -16,10 +16,10 @@ taskKey="com.javarush.task.task25.task2515.big06"
 * корабль перемещается по случайной траектории;
 
 >Подсказка:
-    ```
-    double dx = Math.random() * 2 — 1; //-1..1
-    double dy = Math.random() * 2 — 1; //-1..1
-    ```
+```
+double dx = Math.random() * 2 — 1; //-1..1
+double dy = Math.random() * 2 — 1; //-1..1
+```
 *   корабль не опускается в нижнюю половину экрана;
     ```
     y <= height/2
