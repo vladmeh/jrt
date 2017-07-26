@@ -2,7 +2,15 @@
 taskKey="com.javarush.task.task25.task2515.big06"
 ***
 
-#### Space (17)
+#### [Space (18)](https://github.com/vladmeh/jrt/commit/c348852905bf33fc7b2c8a32cd5e71f2b557a410)
+
+Поставь width & height побольше и можно играть!
+
+Наслаждаемся игрой :)
+***
+
+
+#### [Space (17)](https://github.com/vladmeh/jrt/commit/1e9da8241d887034ee6ea921449d6da33842e96e)
 
 Надо закончить метод draw().
 Поступим по аналогии с методом move — сегодня я напишу его сам.
