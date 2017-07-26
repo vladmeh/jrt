@@ -2,7 +2,8 @@
 taskKey="com.javarush.task.task25.task2515.big06"
 ***
 
-Space (14)
+#### Space (14)
+
 Теперь напиши класс Ufo.
 Он чуть сложнее класса Bomb и проще SpaceShip.
 Тебе понадобятся методы draw(), move(), fire().
