@@ -10,7 +10,7 @@ Bomb унаследован от BaseObject.
 Надо:
 *   изменить конструктор:
     Конструктор Bomb должен выглядеть примерно так:
-    ```
+    ```java
     public Bomb(double x, double y)
     {
     super(x, y, 1);
@@ -25,7 +25,7 @@ Bomb унаследован от BaseObject.
 *   метод draw(Canvas canvas):
     тут тоже не очень сложная логика.
     Давай просто ставить точку с координатами (x,y) и «цветом» B:
-    ```
+    ```java
     canvas.setPoint(x,y,’B’).
     ```
 
