@@ -26,7 +26,7 @@ public class EvaluatePriority {
         }
 
         if (operators.contains('*')){
-
+            System.out.println(operators.indexOf('*'));
         }
 
     }
