@@ -1,10 +1,8 @@
 package string;
 
-import java.io.BufferedReader;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * @autor mvl on 27.07.2017.
