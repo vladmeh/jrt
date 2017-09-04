@@ -1,5 +1,7 @@
 package algorithms;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+
 /**
  * @autor mvl on 28.07.2017.
  */
@@ -8,7 +10,8 @@ public class EvaluateExpression {
     private static int priority;
 
     public static void main(String[] args) throws Exception {
-        System.out.println(evaluateExpression("20/(7-3)"));
+        System.out.println(evaluateExpression("20/(7-3*2)"));
+        System.out.println("check: " + String.valueOf(20d/(7-3*2)));
     }
 
 
