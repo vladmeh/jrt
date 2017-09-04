@@ -1,6 +1,6 @@
 package com.javarush.task.task34.task3404;
 
-/* 
+/*
 Рекурсия для мат. выражения
 */
 public class Solution {
