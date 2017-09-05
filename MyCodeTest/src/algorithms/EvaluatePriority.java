@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class EvaluatePriority {
 
-
     public static void main(String[] args) {
         String string = "-5+1.5*4^3";
         evaluatePriority(string);
