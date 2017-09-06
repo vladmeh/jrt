@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 */
 public class Solution {
     public static void main(String... args) {    //it's correct line
-        ClassNameToBeReplaced<String> list = new ClassNameToBeReplaced();
+        /*ClassNameToBeReplaced<String> list = new ClassNameToBeReplaced();
         list.add("A");
         list.add("B");
         list.add("C");
@@ -20,7 +20,7 @@ public class Solution {
 
         for (String string : list) {
             System.out.println(string);
-        }
+        }*/
         /* Expected output
 A
 C

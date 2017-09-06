@@ -22,6 +22,7 @@ public class Solution {
 
     public Set<Integer> getAllFriendsAndPotentialFriends(int index, int deep) {
         //напишите тут ваш код
+        return null;
     }
 
     //remove people from set, with which you have already had relationship

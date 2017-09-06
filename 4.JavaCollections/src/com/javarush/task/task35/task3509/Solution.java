@@ -13,12 +13,12 @@ public class Solution {
 
     public static ArrayList newArrayList(Object... elements) {
         //напишите тут ваш код
-        return null
+        return null;
     }
 
     public static HashSet newHashSet(Object... elements) {
         //напишите тут ваш код
-        return null
+        return null;
     }
 
     public static HashMap newHashMap(List keys, List values) {
