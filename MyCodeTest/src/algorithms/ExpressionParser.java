@@ -28,7 +28,7 @@ class ExpressionParser {
     }
 
     private static boolean isFunction(String token) {
-        return token.equals("sqrt") || token.equals("cube") || token.equals("pow10");
+        return token.equals("sqrt") || token.equals("cube") || token.equals("pow10") || token.equals("sin");
     }
 
     private static int priority(String token) {
@@ -44,7 +44,7 @@ class ExpressionParser {
 
         StringTokenizer tokenizer = new StringTokenizer(infix, delimiters, true);
         String prev = "";
-        String curr = "";
+        String curr;
 
         while (tokenizer.hasMoreTokens()) {
             curr = tokenizer.nextToken();
@@ -117,6 +117,7 @@ class Ideone {
                 stack.push(tmp * tmp * tmp);
             }
             else if (x.equals("pow10")) stack.push(Math.pow(10, stack.pop()));
+            else if (x.equals("sin")) stack.push(Math.sin(Math.toRadians(stack.pop())));
             else if (x.equals("+")) stack.push(stack.pop() + stack.pop());
             else if (x.equals("-")) {
                 Double b = stack.pop(), a = stack.pop();
