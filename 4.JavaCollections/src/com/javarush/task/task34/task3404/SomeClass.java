@@ -1,8 +1,7 @@
 package com.javarush.task.task34.task3404;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+
+import java.util.*;
 
 /**
  * @autor mvl on 01.08.2017.
@@ -14,120 +13,158 @@ public class SomeClass {
     }
 
     public void recursion(final String expression, int countOperation) {
-        //implement
-        String exp = expression; //передаваемое выражение
-        String expInBkt = expression; //выражение внутри скобок
-        String expBkt = expression; //выражение со скобками
-        int countOper = countOperation; //счетчик операций
+        //убираем пробелы, переводим в нижний регистр
+        String string = expression.replace(" ", "").toLowerCase();
 
-        //Подсчет всех операций
-        if (countOper == 0){
-            countOper += (exp.split("\\^").length - 1)+(exp.split("/").length-1)+(exp.split("\\*").length-1)
-                    +(exp.split("\\+").length-1)+(exp.split("-").length-1)+(exp.split("cos").length-1)+(exp.split("sin").length-1)+(exp.split("tan").length-1);
+        List<String> out = new ArrayList<>();
+        Deque<String> stack = new LinkedList<>();
+        StringBuilder st = new StringBuilder();
+
+        //разбираем строку на слова
+        StringTokenizer tokenizer = new StringTokenizer(expression, delimiters(), true);
+
+        String prev = "";
+        String curr = "";
+        String next = "";
+
+        while (tokenizer.hasMoreTokens()) {
+
+            curr = tokenizer.nextToken();
+
+            //boolean digit = isDigits(curr);
+
+            //проверяем на корректность выражения
+            if (!tokenizer.hasMoreTokens() && isOperator(curr)){
+                throw new ArithmeticException("Некорректное выражение");
+            }
+
+            if (isFunction(curr)) out.add(curr);
+            else if (isDelimiter(curr)) {
+                if (curr.equals("(")){
+                    while (!out.isEmpty()) st.append(out.remove(0));
+                    st.append(curr);
+                }
+                //закрывающая скобка
+                // это значит, что в списке осталось выражение без скобок
+                // выражение может быть только простым т.е. с простыми операторами, без функций
+                // надо выслить приритетный оператор и выслить по нему значение, которе потом вернуть
+                // в строку.
+                else if (curr.equals(")")){
+                    int indexPriorityOperator = getIndexPriority(out);
+                    double a = Double.parseDouble(out.remove(indexPriorityOperator-1));
+                    String op = out.remove(indexPriorityOperator-1);
+                    double b = Double.parseDouble(out.remove(indexPriorityOperator-1));
+                    String result = calc(a, b, op);
+                    System.out.println(result);
+                    out.add(result);
+                }
+                else out.add(curr);
+            }
+            else if (isDigits(curr)){
+                if (!isOperator(prev)){
+                    while (!out.isEmpty()) st.append(out.remove(0));
+                }
+                out.add(curr);
+            }
+            else out.add(curr);
+            prev = curr;
+
+            System.out.println(st);
         }
-
-        //находим индекс последней открытой скобки
-        int lastIndexOpenBkt = exp.lastIndexOf('(');
-        //если такая есть
-        if (lastIndexOpenBkt >= 0) {
-            int firstIndexCloseBkt = exp.indexOf(')');
-            //если такая есть
-            if (firstIndexCloseBkt > 0){
-                //вырезаем строку внутри скобок
-                expInBkt = exp.substring(lastIndexOpenBkt+1, firstIndexCloseBkt);
-                //вырезаем строку со скобками
-                expBkt = exp.substring(lastIndexOpenBkt, firstIndexCloseBkt+1);
-            }
-            else throw new ArithmeticException("Нет закрывающей скобки у выражения: \"" + exp.substring(lastIndexOpenBkt) + "\"");
-        }
-
-        //Создаем список чисел
-        List<Double> numbers =  new LinkedList<>();
-
-        //Если имеется унарный оператор вначале выражения подставляем 0
-        if (expInBkt.charAt(0) == '-')
-            expInBkt = "0" + expInBkt;
-
-        String[] nums = expInBkt.split("[-+*/^]");
-        for (String num: nums)
-            numbers.add(Double.parseDouble(num));
-
-        //Создаем список операторов
-        List<Character> operators = new LinkedList<>();
-        for (int i = 0; i < expInBkt.length(); i++) {
-            char ch = expInBkt.charAt(i);
-            if ((ch == '+') || (ch == '-') || (ch == '*') || (ch == '/') || (ch == '^'))
-                operators.add(ch);
-        }
-
-        //index оператора который будет выполняться
-        int indexOperator = 0;
-
-        //находим оператор в списке по приоритету и определяем его индекс
-        while (operators.size() > 0){
-            if (operators.contains('^')){
-                indexOperator = operators.indexOf('^');
-                break;
-            }
-
-            if (operators.contains('*')){
-                indexOperator = operators.indexOf('*');
-                break;
-            }
-
-            if (operators.contains('/')){
-                indexOperator = operators.indexOf('/');
-                break;
-            }
-
-            if (operators.contains('-')){
-                indexOperator = operators.indexOf('-');
-                break;
-            }
-
-            if (operators.contains('+')){
-                indexOperator = operators.indexOf('+');
-                break;
-            }
-        }
-
-        //зная индеск оператора мы можем определить числа
-        // над которыми будем определять действия найденным оператором
-        Double firstNumber = numbers.remove(indexOperator);
-        Double secondNumber = numbers.remove(indexOperator);
-        char operator = operators.get(indexOperator);
-
-        //делаем вычисления
-        double result = 0;
-
-        switch (operator) {
-            case '^':
-                result = Math.pow(firstNumber, secondNumber);
-                break;
-            case '+':
-                result = firstNumber + secondNumber;
-                break;
-            case '-':
-                result = firstNumber - secondNumber;
-                break;
-            case '*':
-                result = firstNumber * secondNumber;
-                break;
-            case '/':
-                result = firstNumber / secondNumber;
-                break;
-        }
-
-        System.out.println("Искомая строка: " + exp);
-        System.out.println("Первое что будем вычислять: " + expBkt);
-        System.out.println("делаем вычисления: " + String.valueOf(firstNumber) + String.valueOf(operator) + String.valueOf(secondNumber) + " = " + String.valueOf(result));
     }
 
-    private int countOperation(String expression){
-        return (expression.split("\\^").length-1) + (expression.split("/").length-1) + (expression.split("\\*").length-1) + (expression.split("\\+").length-1) + (expression.split("-").length-1);
-    }
 
     public SomeClass() {
         //don't delete
+    }
+
+    private static String operators() {
+        return "+-*/^";
+    }
+
+    private static String delimiters(){
+        return "()" + operators();
+    }
+
+    private static boolean isOperator(String token) {
+        if (token.equals("u-")) return true;
+        for (int i = 0; i < operators().length(); i++) {
+            if (token.charAt(0) == operators().charAt(i)) return true;
+        }
+        return false;
+    }
+
+    private static boolean isDelimiter(String token) {
+        if (token.length() != 1) return false;
+        for (int i = 0; i < delimiters().length(); i++) {
+            if (token.charAt(0) == delimiters().charAt(i)) return true;
+        }
+        return false;
+    }
+
+    private static boolean isFunction(String token) {
+        return token.equals("sin") || token.equals("cos") || token.equals("tan");
+    }
+
+
+    private static int priority(String token) {
+        switch (token) {
+            case "(":
+                return 0;
+            case "+":
+            case "-":
+                return 1;
+            case "*":
+            case "/":
+                return 2;
+            case "^":
+                return 3;
+        }
+        return -1;
+    }
+
+    private static int getIndexPriority(List<String> list) {
+        int index = 0;
+        int priority = priority(list.get(index));
+        for (String string: list){
+            if (priority(string) > priority){
+                priority = priority(string);
+                index = list.indexOf(string);
+            }
+        }
+        return index;
+    }
+
+    private static boolean isDigits(String token) {
+        try {
+            final double v = Double.parseDouble(token);
+            return true;
+        } catch (NumberFormatException ignored) {
+        }
+        return false;
+    }
+
+    private static String calc(Double a, Double b, String operator){
+        Double result = 0d;
+
+        switch (operator) {
+            case "^":
+                result = Math.pow(a, b);
+                break;
+            case "+":
+                result = a + b;
+                break;
+            case "-":
+                result = a - b;
+                break;
+            case "*":
+                result = a * b;
+                break;
+            case "/":
+                result = a / b;
+                break;
+        }
+
+        return String.valueOf(result);
     }
 }
