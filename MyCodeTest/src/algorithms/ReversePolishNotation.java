@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class ReversePolishNotation {
     public static void main(String[] args) {
-        String expression = "tan(44+sin(89-cos(180)^2))";
+        String expression = "0-sin(2*(0-5+1.5*4)+28)";
         System.out.println(reversePolishNotation(expression));
         Double result = calc(reversePolishNotation(expression));
         System.out.println(String.valueOf(result));
