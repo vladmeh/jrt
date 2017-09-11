@@ -8,7 +8,7 @@ import java.util.*;
 public class Recursion {
     public static void main(String[] args) {
         Recursion solution = new Recursion();
-        solution.recursion("sin(2*(1.5*4-5)+28)", 0); //sin(2*(-5+1.5*4)+28)
+        solution.recursion("(2*(1.5*4-5)+28)", 0); //sin(2*(-5+1.5*4)+28)
     }
 
     public void recursion(final String expression, int countOpetation){
@@ -18,28 +18,79 @@ public class Recursion {
 
         StringTokenizer tokenizer = new StringTokenizer(exp, delimiters(), true);
         String token = "";
+        boolean flag = true;
+
+
         while (tokenizer.hasMoreTokens()){
             token = tokenizer.nextToken();
 
-            // Если функция
+            // Если функция пишем ее в контейнер символов (операторов)
             if (isFunction(token)) someOpers.add(token);
             else if (isDelimiter(token)){
-                // Если натыкаемся на открывающуюся скобку
+                // Если натыкаемся на открывающуюся скобку пишем ее в контейнер символов
                 if (token.equals("(")) someOpers.add(token);
 
                 else if (token.equals(")")){
+                    // Смотрим - пока последний символ контейнера
+                    // символов не открывающаяся скобка -
+                    // Выполняем метод, который учит считать
+                    // программу, передавая ему в параметрах
+                    // наш контейнер с числами и последний
+                    // символ в контейнере символов, причем
+                    // удаляя его опосля
+                    // Например:
+                    //
+                    // Числовой Контейнер:   { 2, 2 }
+                    // Символьный Контейнер: { (, + }
+                    //
+                    // Передаем letGo({2,2},'+');
+                    //
+                    // На выходе:
+                    //
+                    // Числовой Контейнер:   { 4 }
+                    // Символьный Контейнер: { ( }
                     while (!someOpers.getLast().equals("(")){
                         calc(someInts, someOpers.removeLast());
                     }
+
+                    // После while - удаляем последний символ
+                    // из Символьного Контейнера. Если смотреть
+                    // пример - это открывающаяся скобка
                     someOpers.removeLast();
                     System.out.println(someInts.toString());
                 }
 
+                // Так же, во время цикла мы проверяем каждый символ
+                // на предмет - а не оператор ли он часом?
+                // Если же да, то
+                // ПОКА массив символов непустой и приоритет
+                // последнего символа в контейнере символов
+                // больше или равен приоритету текущего -
+                // "учим" программу считать, передавая в параметрах
+                // контейнер с числами и последний символ из
+                // контейнера символов, удаляя его опосля
+                // Например:
+                //
+                // Наш символ: +
+                // Числовой Контейнер:   { 2, 2 }
+                // Символьный Контейнер: { * }
+                //
+                // Согласно условию:
+                //                    СК         не пустой
+                //                    Приоритет  '*' > '+'
+                //
+                // Передаем letGo({2,2},'*');
+                //
+                // На выходе:
+                //
+                // Числовой Контейнер:   { 4 }
+                // Символьный Контейнер: { + }
+                // Кривой пример, конечно, но смысл должен быть ясен
                 else if (isOperator(token)){
                     while (!someOpers.isEmpty() && priority(someOpers.getLast()) >= priority(token)) {
                         calc(someInts, someOpers.removeLast());
                     }
-
+                    System.out.println(someInts.toString());
                     someOpers.add(token);
                 }
             }
