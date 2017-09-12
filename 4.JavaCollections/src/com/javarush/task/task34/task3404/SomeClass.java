@@ -9,68 +9,88 @@ import java.util.*;
 public class SomeClass {
     public static void main(String[] args) {
         SomeClass solution = new SomeClass();
-        solution.recursion("sin(2*(-5+1.5*4)+28)", 0); //expected output 0.5 6
+        solution.recursion("sin(2*(8-4)+28)", 0); //sin(2*(-5+1.5*4)+28)
+        //expected output 0.5 6
     }
 
     public void recursion(final String expression, int countOperation) {
-        //убираем пробелы, переводим в нижний регистр
-        String string = expression.replace(" ", "").toLowerCase();
+        String exp = expression.replace(" ", "").toLowerCase();
 
-        List<String> out = new ArrayList<>();
-        Deque<String> stack = new LinkedList<>();
-        StringBuilder st = new StringBuilder();
+        //Стек операторов
+        Deque<String> opers = new LinkedList<>();
+        //Стек чисел
+        Deque<String> ints = new LinkedList<>();
+        //Результирующая строка, которую мы должны использовать в рекурсии
+        StringBuilder out = new StringBuilder();
+        LinkedList<String> strings = new LinkedList<>();
 
-        //разбираем строку на слова
-        StringTokenizer tokenizer = new StringTokenizer(expression, delimiters(), true);
+        boolean flag = true;
 
-        String prev = "";
-        String curr = "";
-        String next = "";
 
+        //Разбираем строку
+        StringTokenizer tokenizer = new StringTokenizer(exp, delimiters(), true);
+        //текущий токен
+        String token = "";
+
+        //Прохдим циклом по нашей строке
         while (tokenizer.hasMoreTokens()) {
+            token = tokenizer.nextToken();
 
-            curr = tokenizer.nextToken();
+            String tokenOut = token;
+            if (flag) {
+                //если натыкаемся на функцию, пишем ее в стек операторов
+                if (isFunction(token)) opers.push(token);
+                    //разделители
+                else if (isDelimiter(token)) {
+                    //если это открывающаяся скобка пишем ее в стек операторов (символов)
+                    if (token.equals("(")) opers.push(token);
+                        //если это закрывающаяся скобка
+                    else if (token.equals(")")) {
+                        while (!opers.peek().equals("(")) {
+                            String b = ints.pop(), a = ints.pop();
+                            String oper = opers.pop();
+                            tokenOut = calc(Double.parseDouble(a), Double.parseDouble(b), oper);
 
-            //boolean digit = isDigits(curr);
+                            System.out.println(a + oper + b + "=" + tokenOut);
 
-            //проверяем на корректность выражения
-            if (!tokenizer.hasMoreTokens() && isOperator(curr)){
-                throw new ArithmeticException("Некорректное выражение");
+                            flag = false;
+                        }
+                        opers.pop();
+                    }
+                    // если это оператор
+                    // пока стек операторов не пустой и приоритет верхнего оператора
+                    // в стеке больше или равен приоритету текущего
+                    else {
+                        if (!opers.isEmpty() && priority(opers.peek()) >= priority(token)) {
+                            String b = ints.pop(), a = ints.pop();
+                            String oper = opers.pop();
+                            tokenOut = calc(Double.parseDouble(a), Double.parseDouble(b), oper);
+
+                            System.out.println(a + oper + b + "=" + tokenOut);
+
+                            flag = false;
+                        }
+
+                        opers.push(token);
+                    }
+                }
+                //если это число, пишем его в стек чисел
+                else {
+                    ints.push(token);
+                }
             }
 
-            if (isFunction(curr)) out.add(curr);
-            else if (isDelimiter(curr)) {
-                if (curr.equals("(")){
-                    while (!out.isEmpty()) st.append(out.remove(0));
-                    st.append(curr);
-                }
-                //закрывающая скобка
-                // это значит, что в списке осталось выражение без скобок
-                // выражение может быть только простым т.е. с простыми операторами, без функций
-                // надо выслить приритетный оператор и выслить по нему значение, которе потом вернуть
-                // в строку.
-                else if (curr.equals(")")){
-                    int indexPriorityOperator = getIndexPriority(out);
-                    double a = Double.parseDouble(out.remove(indexPriorityOperator-1));
-                    String op = out.remove(indexPriorityOperator-1);
-                    double b = Double.parseDouble(out.remove(indexPriorityOperator-1));
-                    String result = calc(a, b, op);
-                    System.out.println(result);
-                    out.add(result);
-                }
-                else out.add(curr);
-            }
-            else if (isDigits(curr)){
-                if (!isOperator(prev)){
-                    while (!out.isEmpty()) st.append(out.remove(0));
-                }
-                out.add(curr);
-            }
-            else out.add(curr);
-            prev = curr;
-
-            System.out.println(st);
+            strings.add(tokenOut);
+            System.out.println(ints.toString());
+            System.out.println(opers.toString());
+            System.out.println();
+            System.out.println(strings.toString());
         }
+
+        for (String string : strings)
+            out.append(string);
+
+        System.out.println(out);
     }
 
 
@@ -82,7 +102,7 @@ public class SomeClass {
         return "+-*/^";
     }
 
-    private static String delimiters(){
+    private static String delimiters() {
         return "()" + operators();
     }
 
@@ -126,8 +146,8 @@ public class SomeClass {
     private static int getIndexPriority(List<String> list) {
         int index = 0;
         int priority = priority(list.get(index));
-        for (String string: list){
-            if (priority(string) > priority){
+        for (String string : list) {
+            if (priority(string) > priority) {
                 priority = priority(string);
                 index = list.indexOf(string);
             }
@@ -144,7 +164,8 @@ public class SomeClass {
         return false;
     }
 
-    private static String calc(Double a, Double b, String operator){
+    private static String calc(double a, double b, String operator) {
+
         Double result = 0d;
 
         switch (operator) {
