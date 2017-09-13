@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 public class SomeClass2 {
     public static void main(String[] args) {
         SomeClass2 solution = new SomeClass2();
-        solution.recursion("sin(22+8)", 0); //sin(2*(-5+1.5*4)+28)
+        solution.recursion("2*(3+5)/4", 0); //sin(2*(-5+1.5*4)+28)
         //expected output 0.5 6
     }
 
@@ -22,11 +22,9 @@ public class SomeClass2 {
         Deque<String> opers = new LinkedList<>();
         Deque<String> numbers = new LinkedList<>();
 
-        boolean flag = true;
-
         StringTokenizer tokenizer = new StringTokenizer(exp, delimiters(), true);
         String curr = "";
-        String prev = "";
+
 
         while (tokenizer.hasMoreTokens()) {
             curr = tokenizer.nextToken();
@@ -47,33 +45,34 @@ public class SomeClass2 {
             else if (curr.equals(")")) {
                 if (!opers.peek().equals("(")) {
                     String b = numbers.pop(), a = numbers.pop();
-                    String oper = opers.pop();
 
-                    String pattern = String.format("%s\\%s%s", a, oper, b);
-                    System.out.println(pattern);
+                    String pattern = String.format("\\(%s\\%s%s\\)", a, opers.peek(), b);
+                    //System.out.println(pattern);
 
-                    String result = calc(Double.parseDouble(a), Double.parseDouble(b), oper);
-                    System.out.println(result);
+                    String result = calc(Double.parseDouble(a), Double.parseDouble(b), opers.pop());
+                    //System.out.println(result);
 
                     exp = exp.replaceAll(pattern, result);
-                    System.out.println(exp);
-                    recursion(exp, countOperation++);
+                    //System.out.println(exp);
+                    recursion(exp, ++countOperation);
                 }
                 opers.pop();
+
                 //если стек не пустой и в начале очереди функция
                 if (!opers.isEmpty() && isFunction(opers.peek())) {
+
                     String func = opers.pop();
                     String val = numbers.pop();
 
                     String pattern = String.format("%s\\(%s\\)", func, val);
-                    System.out.println(pattern);
+                    //System.out.println(pattern);
 
                     String result = calc(Double.parseDouble(val), func);
-                    System.out.println(result);
+                    //System.out.println(result);
 
-                    exp = exp.replaceAll(pattern, val);
-                    System.out.println(exp);
-                    recursion(exp, countOperation++);
+                    exp = exp.replaceAll(pattern, result);
+                    //System.out.println(exp);
+                    recursion(exp, ++countOperation);
                 }
             }
             //операторы
@@ -83,14 +82,14 @@ public class SomeClass2 {
                     String oper = opers.pop();
 
                     String pattern = String.format("%s\\%s%s", a, oper, b);
-                    System.out.println(pattern);
+                    //System.out.println(pattern);
 
                     String result = calc(Double.parseDouble(a), Double.parseDouble(b), oper);
-                    System.out.println(result);
+                    //System.out.println(result);
 
                     exp = exp.replaceAll(pattern, result);
-                    System.out.println(exp);
-                    recursion(exp, countOperation++);
+                    //System.out.println(exp);
+                    recursion(exp, ++countOperation);
                 }
                 opers.push(curr);
             }
@@ -98,14 +97,14 @@ public class SomeClass2 {
             else {
                 numbers.push(curr);
             }
-
-
-            System.out.println(opers.toString());
-            System.out.println(numbers.toString());
-            System.out.println();
         }
 
-        System.out.println(exp + " " + countOperation);
+        if (!opers.isEmpty()){
+            System.out.println(opers.toString());
+            System.out.println(numbers.toString());
+        }
+
+        //System.out.println(exp + " " + countOperation);
     }
 
 
