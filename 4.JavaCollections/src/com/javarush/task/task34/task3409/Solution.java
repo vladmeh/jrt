@@ -12,7 +12,8 @@ import java.util.Properties;
 */
 public class Solution {
     public static void main(String args[]) throws IOException {
-        String logProperties = "src/" + Solution.class.getPackage().getName().replaceAll("[.]", "/") + "/log4j.properties";
+        String logProperties = "src/" + Solution.class.getPackage().getName().replaceAll("[.]", "/")
+                + "/log4j.properties";
         Path path = Paths.get(logProperties).toAbsolutePath();
         try (InputStream is = new FileInputStream(path.toFile())) {
             Properties properties = new Properties();
