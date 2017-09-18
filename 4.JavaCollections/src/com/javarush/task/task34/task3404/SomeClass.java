@@ -1,6 +1,7 @@
 package com.javarush.task.task34.task3404;
 
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -9,88 +10,150 @@ import java.util.*;
 public class SomeClass {
     public static void main(String[] args) {
         SomeClass solution = new SomeClass();
-        solution.recursion("sin(2*(8-4)+28)", 0); //sin(2*(-5+1.5*4)+28)
+        solution.recursion("sin(45)", 0); //sin(2*(-5+1.5*4)+28)
         //expected output 0.5 6
     }
 
     public void recursion(final String expression, int countOperation) {
-        String exp = expression.replace(" ", "").toLowerCase();
+        Locale.setDefault(Locale.ENGLISH);
 
-        //Стек операторов
-        Deque<String> opers = new LinkedList<>();
-        //Стек чисел
-        Deque<String> ints = new LinkedList<>();
-        //Результирующая строка, которую мы должны использовать в рекурсии
-        StringBuilder out = new StringBuilder();
-        LinkedList<String> strings = new LinkedList<>();
+        if (countOperation > 0){
+            System.out.println(expression + " " + countOperation);
+        }
+        else {
+            //==================================================================
+            //Первая часть Марлезонского балета
+            //Переводим выражение в постфиксную запись (обратная польская запись)
 
-        boolean flag = true;
+            List<String> out = new ArrayList<>();
+            Deque<String> stackPostfix = new ArrayDeque<>();
+            Deque<Double> stack = new ArrayDeque<>();
 
+            StringTokenizer tokenizer = new StringTokenizer(expression.replace(" ", "").toLowerCase(), delimiters(), true);
+            String prev = "";
+            String curr = "";
 
-        //Разбираем строку
-        StringTokenizer tokenizer = new StringTokenizer(exp, delimiters(), true);
-        //текущий токен
-        String token = "";
+            while (tokenizer.hasMoreTokens()) {
+                curr = tokenizer.nextToken();
 
-        //Прохдим циклом по нашей строке
-        while (tokenizer.hasMoreTokens()) {
-            token = tokenizer.nextToken();
+                if (!tokenizer.hasMoreTokens() && isOperator(curr)){
+                    System.out.println("Некорректное выражение.");
+                    break;
+                }
 
-            String tokenOut = token;
-            if (flag) {
-                //если натыкаемся на функцию, пишем ее в стек операторов
-                if (isFunction(token)) opers.push(token);
-                    //разделители
-                else if (isDelimiter(token)) {
-                    //если это открывающаяся скобка пишем ее в стек операторов (символов)
-                    if (token.equals("(")) opers.push(token);
-                        //если это закрывающаяся скобка
-                    else if (token.equals(")")) {
-                        while (!opers.peek().equals("(")) {
-                            String b = ints.pop(), a = ints.pop();
-                            String oper = opers.pop();
-                            tokenOut = calc(Double.parseDouble(a), Double.parseDouble(b), oper);
-
-                            System.out.println(a + oper + b + "=" + tokenOut);
-
-                            flag = false;
+                //если функция помещаем в начало очереди
+                if (isFunction(curr)) stackPostfix.push(curr);
+                    //если скобки или операторы
+                else if (isDelimiter(curr)) {
+                    //если открывающая скобка - помещаем ее в начало очереди
+                    if (curr.equals("(")) stackPostfix.push(curr);
+                        //если закрывающая скобка
+                    else if (curr.equals(")")) {
+                        //пока в начале очереди не будет открывающей скобки
+                        while (!stackPostfix.peek().equals("(")) {
+                            //добавляем из начала стека элементы в выходной список
+                            out.add(stackPostfix.pop());
+                            //если стек пустой возвращаем ошибку
+                            if (stackPostfix.isEmpty()) {
+                                System.out.println("Скобки не согласованы.");
+                            }
                         }
-                        opers.pop();
+                        //удаляем "(" из стека
+                        stackPostfix.pop();
+                        //если стек не пустой и в начале очереди функция
+                        if (!stackPostfix.isEmpty() && isFunction(stackPostfix.peek())) {
+                            //добавляем ее в выходной список
+                            out.add(stackPostfix.pop());
+                        }
                     }
-                    // если это оператор
-                    // пока стек операторов не пустой и приоритет верхнего оператора
-                    // в стеке больше или равен приоритету текущего
+                    //оставшиеся операторы
                     else {
-                        if (!opers.isEmpty() && priority(opers.peek()) >= priority(token)) {
-                            String b = ints.pop(), a = ints.pop();
-                            String oper = opers.pop();
-                            tokenOut = calc(Double.parseDouble(a), Double.parseDouble(b), oper);
-
-                            System.out.println(a + oper + b + "=" + tokenOut);
-
-                            flag = false;
+                        //унарный минус
+                        if (curr.equals("-") && (prev.equals("") || (isDelimiter(prev) && !prev.equals(")")))) {
+                            curr = "u-";
                         }
-
-                        opers.push(token);
+                        else {
+                            //пока очередь не пуста и приритет текущего элемента меньше или равна приоритету элемента в начале очереди
+                            while (!stackPostfix.isEmpty() && (priority(curr) <= priority(stackPostfix.peek()))){
+                                //убираем элемент из очереди и добавляем его в выходной список
+                                out.add(stackPostfix.pop());
+                            }
+                        }
+                        //добавляем оператор в начало очереди
+                        stackPostfix.push(curr);
                     }
                 }
-                //если это число, пишем его в стек чисел
+
                 else {
-                    ints.push(token);
+                    out.add(curr);
+                }
+                prev = curr;
+            }
+
+            while (!stackPostfix.isEmpty()) {
+                if (isOperator(stackPostfix.peek())) out.add(stackPostfix.pop());
+                else {
+                    System.out.println("Скобки не согласованы.");
                 }
             }
 
-            strings.add(tokenOut);
-            System.out.println(ints.toString());
-            System.out.println(opers.toString());
-            System.out.println();
-            System.out.println(strings.toString());
+            //============================================================
+            //Вторая часть марлезонского балета
+            //делаем вычисления
+            for (String x: out){
+                switch (x) {
+                    case "sin":
+                        stack.push(Math.sin(Math.toRadians(stack.pop())));
+                        countOperation++;
+                        break;
+                    case "cos":
+                        stack.push(Math.cos(Math.toRadians(stack.pop())));
+                        countOperation++;
+                        break;
+                    case "tan":
+                        stack.push(Math.tan(Math.toRadians(stack.pop())));
+                        countOperation++;
+                        break;
+                    case "^": {
+                        Double b = stack.pop(), a = stack.pop();
+                        stack.push(Math.pow(a, b));
+                        countOperation++;
+                        break;
+                    }
+                    case "+":
+                        stack.push(stack.pop() + stack.pop());
+                        countOperation++;
+                        break;
+                    case "-": {
+                        Double b = stack.pop(), a = stack.pop();
+                        stack.push(a - b);
+                        countOperation++;
+                        break;
+                    }
+                    case "*":
+                        stack.push(stack.pop() * stack.pop());
+                        countOperation++;
+                        break;
+                    case "/": {
+                        Double b = stack.pop(), a = stack.pop();
+                        stack.push(a / b);
+                        countOperation++;
+                        break;
+                    }
+                    case "u-":
+                        stack.push(-stack.pop());
+                        countOperation++;
+                        break;
+                    default:
+                        stack.push(Double.valueOf(x));
+                        break;
+                }
+            }
+
+            recursion(new DecimalFormat("#.##").format(stack.pop()), countOperation);
+
         }
 
-        for (String string : strings)
-            out.append(string);
-
-        System.out.println(out);
     }
 
 
@@ -140,52 +203,6 @@ public class SomeClass {
             case "^":
                 return 3;
         }
-        return -1;
-    }
-
-    private static int getIndexPriority(List<String> list) {
-        int index = 0;
-        int priority = priority(list.get(index));
-        for (String string : list) {
-            if (priority(string) > priority) {
-                priority = priority(string);
-                index = list.indexOf(string);
-            }
-        }
-        return index;
-    }
-
-    private static boolean isDigits(String token) {
-        try {
-            final double v = Double.parseDouble(token);
-            return true;
-        } catch (NumberFormatException ignored) {
-        }
-        return false;
-    }
-
-    private static String calc(double a, double b, String operator) {
-
-        Double result = 0d;
-
-        switch (operator) {
-            case "^":
-                result = Math.pow(a, b);
-                break;
-            case "+":
-                result = a + b;
-                break;
-            case "-":
-                result = a - b;
-                break;
-            case "*":
-                result = a * b;
-                break;
-            case "/":
-                result = a / b;
-                break;
-        }
-
-        return String.valueOf(result);
+        return 4;
     }
 }

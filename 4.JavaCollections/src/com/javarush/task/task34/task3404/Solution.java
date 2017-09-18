@@ -1,7 +1,7 @@
 package com.javarush.task.task34.task3404;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DecimalFormat;
+import java.util.*;
 
 /*
 Рекурсия для мат. выражения
@@ -14,283 +14,169 @@ public class Solution {
 
     public void recursion(final String expression, int countOperation) {
         //implement
-        //нахождение позиций открывающих и закрывающих скобок подвыражения
-        boolean hasOpenBracketPos = false;
-        int openBracketPos = 0;
-        int closeBracketPos = 0;
+        Locale.setDefault(Locale.ENGLISH);
 
-        for (int i = 0; i < expression.toCharArray().length; i++)
-        {
-            char c = expression.charAt(i);
-            if (c == '(' && hasOpenBracketPos)
-            {
-                openBracketPos = i;
-            } else if (c == '(')
-            {
-                openBracketPos = i;
-                hasOpenBracketPos = true;
-            }
-            if (c == ')')
-            {
-                closeBracketPos = i;
-                break;
-            }
+        if (countOperation > 0){
+            System.out.println(expression + " " + countOperation);
         }
+        else {
+            List<String> out = new ArrayList<>();
+            Deque<String> stackPostfix = new ArrayDeque<>();
+            Deque<Double> stack = new ArrayDeque<>();
 
-        // вычисление подвыражения:
-        String subExpression;
-        if (openBracketPos == 0 && closeBracketPos == 0)
-        {
-            subExpression = expression;
-        } else
-        {
-            subExpression = expression.substring(openBracketPos + 1, closeBracketPos);
-        }
-        subExpression = subExpression.replaceAll(" ", "");
+            StringTokenizer tokenizer = new StringTokenizer(expression.replace(" ", "").toLowerCase(), delimiters(), true);
+            String prev = "";
+            String curr = "";
 
-        //Создание списков операций и чисел
-        List<String> operations = new ArrayList<>();
-        List<String> numbers = new ArrayList<>();
+            while (tokenizer.hasMoreTokens()) {
+                curr = tokenizer.nextToken();
 
-        String number = "";
-        boolean isOperationFirst = false;
-
-        for (int i = 0; i < subExpression.toCharArray().length; i++)
-        {
-            char c = subExpression.charAt(i);
-            if ((c >= '0' && c <= '9') || (c == '.'))
-            {
-                if (i < subExpression.toCharArray().length - 1)
-                {
-                    number += c;
-                    continue;
-                } else
-                {
-                    number += c;
+                if (!tokenizer.hasMoreTokens() && isOperator(curr)){
+                    System.out.println("Некорректное выражение.");
+                    break;
                 }
-            }
 
-            if (!number.equals(""))
-            {
-                numbers.add(number);
-                number = "";
-            }
-
-            if (c == '-' || c == '+' || c == '*' || c == '/' || c == '^')
-            {
-                if (i == 0)
-                {
-                    isOperationFirst = true;
-                }
-                operations.add(String.valueOf(c));
-            }
-        }
-        int operationsAmount = operations.size();
-
-        //вычисление подвыражения:
-        double subExpressionResult = 0d;
-
-        while (operations.size() > 0)
-        {
-            //вычисление всех операций возведения в степень:
-            while (operations.contains("^"))
-            {
-                //вычисление одной операции возведения в степень:
-                int operationPos = 0;
-                int numberForInvolutePos = 0;
-                int involuteNumberPos = 0;
-                double numberForInvolute;
-                for (int i = 0; i < operations.size(); i++)
-                {
-                    if (operations.get(i).equals("^"))
-                    {
-                        operationPos = i;
-                        if (isOperationFirst)
-                        {
-                            numberForInvolutePos = i - 1;
-                            involuteNumberPos = i;
-                            numberForInvolute = Double.valueOf(numbers.get(i - 1));
-                            subExpressionResult = numberForInvolute;
-                            for (int j = 1; j < Double.valueOf(numbers.get(i)); j++)
-                            {
-                                subExpressionResult = subExpressionResult * numberForInvolute;
-                            }
-                        } else
-                        {
-                            numberForInvolutePos = i;
-                            involuteNumberPos = i + 1;
-                            numberForInvolute = Double.valueOf(numbers.get(i));
-                            subExpressionResult = numberForInvolute;
-                            for (int j = 1; j < Double.valueOf(numbers.get(i + 1)); j++)
-                            {
-                                subExpressionResult = subExpressionResult * numberForInvolute;
+                if (isFunction(curr)) stackPostfix.push(curr);
+                else if (isDelimiter(curr)) {
+                    if (curr.equals("(")) stackPostfix.push(curr);
+                    else if (curr.equals(")")) {
+                        while (!stackPostfix.peek().equals("(")) {
+                            out.add(stackPostfix.pop());
+                            if (stackPostfix.isEmpty()) {
+                                System.out.println("Скобки не согласованы.");
                             }
                         }
-                        break;
+                        stackPostfix.pop();
+                        if (!stackPostfix.isEmpty() && isFunction(stackPostfix.peek())) {
+                            out.add(stackPostfix.pop());
+                        }
+                    }
+                    else {
+                        if (curr.equals("-") && (prev.equals("") || (isDelimiter(prev) && !prev.equals(")")))) {
+                            curr = "u-";
+                        }
+                        else {
+                            while (!stackPostfix.isEmpty() && (priority(curr) <= priority(stackPostfix.peek()))){
+                                out.add(stackPostfix.pop());
+                            }
+                        }
+                        stackPostfix.push(curr);
                     }
                 }
 
-                operations.remove(operationPos);
-                numbers.remove(numberForInvolutePos);
-                numbers.remove(involuteNumberPos - 1);
-
-                if (isOperationFirst)
-                {
-                    numbers.add(operationPos - 1, String.valueOf(subExpressionResult));
-                } else
-                {
-                    numbers.add(operationPos, String.valueOf(subExpressionResult));
+                else {
+                    out.add(curr);
                 }
+                prev = curr;
             }
 
-            // вычисление всех операций умножения и деления:
-            while (operations.contains("*") || operations.contains("/"))
-            {
-                //вычисление одной операции умножения или деления:
-                int operationPos = 0;
-                int firstNumberPos = 0;
-                int secondNumberPos = 0;
-                for (int i = 0; i < operations.size(); i++)
-                {
-                    String opChar = operations.get(i);
-                    if (opChar.equals("*") || opChar.equals("/"))
-                    {
-                        operationPos = i;
-                        if (isOperationFirst)
-                        {
-                            firstNumberPos = i - 1;
-                            secondNumberPos = i;
-                        } else
-                        {
-                            firstNumberPos = i;
-                            secondNumberPos = i + 1;
-                        }
-                        double firstNumber = Double.valueOf(numbers.get(firstNumberPos));
-                        double secondNumber = Double.valueOf(numbers.get(secondNumberPos));
-                        if (opChar.equals("*"))
-                        {
-                            subExpressionResult = firstNumber * secondNumber;
-                        } else if (opChar.equals("/"))
-                        {
-                            subExpressionResult = firstNumber / secondNumber;
-                        }
+            while (!stackPostfix.isEmpty()) {
+                if (isOperator(stackPostfix.peek())) out.add(stackPostfix.pop());
+                else {
+                    System.out.println("Скобки не согласованы.");
+                    break;
+                }
+            }
+            for (String x: out){
+                switch (x) {
+                    case "sin":
+                        stack.push(Math.sin(Math.toRadians(stack.pop())));
+                        countOperation++;
+                        break;
+                    case "cos":
+                        stack.push(Math.cos(Math.toRadians(stack.pop())));
+                        countOperation++;
+                        break;
+                    case "tan":
+                        stack.push(Math.tan(Math.toRadians(stack.pop())));
+                        countOperation++;
+                        break;
+                    case "^": {
+                        Double b = stack.pop(), a = stack.pop();
+                        stack.push(Math.pow(a, b));
+                        countOperation++;
                         break;
                     }
-                }
-
-                operations.remove(operationPos);
-                numbers.remove(firstNumberPos);
-                numbers.remove(secondNumberPos - 1);
-
-                if (isOperationFirst)
-                {
-                    numbers.add(operationPos - 1, String.valueOf(subExpressionResult));
-                } else
-                {
-                    numbers.add(operationPos, String.valueOf(subExpressionResult));
-                }
-            }
-
-            // вычисление всех операций сложения и вычитания:
-            subExpressionResult = 0d;
-            for (int i = 0; i < operations.size(); i++)
-            {
-                if (isOperationFirst && (i == 0))
-                {
-                    subExpressionResult = Double.valueOf(operations.get(i) + numbers.get(i));
-                    continue;
-                } else if (!isOperationFirst && (i == 0))
-                {
-                    subExpressionResult = Double.valueOf(numbers.get(i));
-                }
-
-                String op = operations.get(i);
-                switch (op)
-                {
-                    case "-":
-                        if (isOperationFirst)
-                        {
-                            subExpressionResult -= Double.valueOf(numbers.get(i));
-                        } else
-                        {
-                            subExpressionResult -= Double.valueOf(numbers.get(i + 1));
-                        }
-                        break;
                     case "+":
-                        if (isOperationFirst)
-                        {
-                            subExpressionResult += Double.valueOf(numbers.get(i));
-                        } else
-                        {
-                            subExpressionResult += Double.valueOf(numbers.get(i + 1));
-                        }
+                        stack.push(stack.pop() + stack.pop());
+                        countOperation++;
+                        break;
+                    case "-": {
+                        Double b = stack.pop(), a = stack.pop();
+                        stack.push(a - b);
+                        countOperation++;
+                        break;
+                    }
+                    case "*":
+                        stack.push(stack.pop() * stack.pop());
+                        countOperation++;
+                        break;
+                    case "/": {
+                        Double b = stack.pop(), a = stack.pop();
+                        stack.push(a / b);
+                        countOperation++;
+                        break;
+                    }
+                    case "u-":
+                        stack.push(-stack.pop());
+                        countOperation++;
+                        break;
+                    default:
+                        stack.push(Double.valueOf(x));
                         break;
                 }
             }
-            operations.clear();
-        }
 
-
-        // после вычисления подвыражения, проверка и вычисление синуса, косинуса или тангенса:
-        String trigoStr = null;
-        if (openBracketPos >= 3)
-        {
-            String symbolsBeforeOpenBracket = expression.substring(openBracketPos - 3, openBracketPos);
-            switch (symbolsBeforeOpenBracket)
-            {
-                case "sin":
-                    subExpressionResult = Math.sin(Math.toRadians(subExpressionResult));
-                    operationsAmount++;
-                    trigoStr = "sin";
-                    break;
-                case "cos":
-                    subExpressionResult = Math.cos(Math.toRadians(subExpressionResult));
-                    operationsAmount++;
-                    trigoStr = "cos";
-                    break;
-                case "tan":
-                    subExpressionResult = Math.tan(Math.toRadians(subExpressionResult));
-                    operationsAmount++;
-                    trigoStr = "tan";
-                    break;
-                default:
-                    break;
-            }
-
-            subExpressionResult = Math.rint(100 * subExpressionResult) / 100.0;
-        }
-
-        //Конкатенация нового expression для рекурсии:
-        String newExpression;
-        if (expression.contains("+") || expression.contains("-") || expression.contains("*") ||
-                expression.contains("/") || expression.contains("^") || expression.contains("sin") ||
-                expression.contains("cos") || expression.contains("tan"))
-        {
-            if ((trigoStr != null) && (expression.substring(openBracketPos - 3, openBracketPos).equals(trigoStr))) {
-                newExpression = expression.substring(0, openBracketPos - 3) +
-                        subExpressionResult +
-                        (closeBracketPos == expression.length() - 1 ? "" : expression.substring(closeBracketPos + 1));
-            } else
-            {
-                if (openBracketPos == 0 && closeBracketPos == 0)
-                {
-                    newExpression = String.valueOf(subExpressionResult);
-                } else
-                {
-                    newExpression = expression.substring(0, openBracketPos) +
-                            subExpressionResult +
-                            (closeBracketPos == expression.length() - 1 ? "" : expression.substring(closeBracketPos + 1));
-                }
-            }
-            recursion(newExpression, countOperation + operationsAmount);
-
-        } else
-        {
-            System.out.println(expression + " " + (countOperation + operationsAmount));
+            recursion(new DecimalFormat("#.##").format(stack.pop()), countOperation);
         }
     }
 
     public Solution() {
         //don't delete
+    }
+
+    private static String operators() {
+        return "+-*/^";
+    }
+
+    private static String delimiters() {
+        return "()" + operators();
+    }
+
+    private static boolean isOperator(String token) {
+        if (token.equals("u-")) return true;
+        for (int i = 0; i < operators().length(); i++) {
+            if (token.charAt(0) == operators().charAt(i)) return true;
+        }
+        return false;
+    }
+
+    private static boolean isDelimiter(String token) {
+        if (token.length() != 1) return false;
+        for (int i = 0; i < delimiters().length(); i++) {
+            if (token.charAt(0) == delimiters().charAt(i)) return true;
+        }
+        return false;
+    }
+
+    private static boolean isFunction(String token) {
+        return token.equals("sin") || token.equals("cos") || token.equals("tan");
+    }
+
+
+    private static int priority(String token) {
+        switch (token) {
+            case "(":
+                return 0;
+            case "+":
+            case "-":
+                return 1;
+            case "*":
+            case "/":
+                return 2;
+            case "^":
+                return 3;
+        }
+        return 4;
     }
 }

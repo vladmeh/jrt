@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class ReversePolishNotation {
     public static void main(String[] args) {
-        String expression = "0-sin(2*(0-5+1.5*4)+28)";
+        String expression = "sin(2*(-5+1.5*4)+28)";
         System.out.println(reversePolishNotation(expression));
         Double result = calc(reversePolishNotation(expression));
         System.out.println(String.valueOf(result));
