@@ -1,26 +1,25 @@
 package com.javarush.task.task35.task3510;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /* 
 Вход воспрещен!
 */
-public class House {
+public class House<T> {
 
-    private List residents = new ArrayList();
+    private List<T> residents = new ArrayList<>();
 
-    public void enter(Object resident) {
+    public void enter(T resident) {
         residents.add(resident);
-        checkConflicts();
+        //checkConflicts();
     }
 
-    public void leave(Object resident) {
+    public void leave(T resident) {
         residents.remove(resident);
     }
 
-    private void checkConflicts() {
+    /*private void checkConflicts() {
         boolean conflict = false;
         for (Object resident : residents) {
             if (resident instanceof Dog) {
@@ -37,7 +36,7 @@ public class House {
                 }
             }
         }
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -55,13 +54,13 @@ public class House {
         Cat barsik = new Cat("Barsik");
         Kitten keksik = new Kitten("Keksik");
 
-        House dogHouse = new House();
+        House<Object> dogHouse = new House<>();
         dogHouse.enter(bruno);
         dogHouse.enter(larsik);
         dogHouse.enter(barsik);
         System.out.println(dogHouse.toString());
 
-        House catHouse = new House();
+        House<Object> catHouse = new House<>();
         catHouse.enter(barsik);
         catHouse.enter(keksik);
         catHouse.enter(bruno);
