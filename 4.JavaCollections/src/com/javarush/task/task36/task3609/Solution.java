@@ -16,15 +16,15 @@ public class Solution {
         controller.updateView();
 
         //Update model data
-        model.speedUp(15);
+        controller.speedUp(15);
         controller.updateView();
 
         //Update model data
-        model.speedUp(50);
+        controller.speedUp(50);
         controller.updateView();
 
         //Update model data
-        model.speedDown(7);
+        controller.speedDown(7);
         controller.updateView();
     }
 
