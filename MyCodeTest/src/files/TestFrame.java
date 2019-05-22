@@ -26,13 +26,13 @@ public class TestFrame extends JFrame {
         rootContent.setLayout(new BoxLayout(rootContent, BoxLayout.Y_AXIS));
         final JScrollPane rootContentScroll = new JScrollPane(rootContent);
         File[] roots = File.listRoots();
-        final JList list = new JList(roots);
+        final JList<File> list = new JList<>(roots);
         list.setVisibleRowCount(5);
 
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 rootContent.removeAll();
-                File root = (File) list.getSelectedValue();
+                File root = list.getSelectedValue();
                 File[] children = root.listFiles();
                 if (children != null) {
                     for (int i = 0; i < children.length; i++) {
