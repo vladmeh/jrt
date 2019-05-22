@@ -11,4 +11,4 @@
 *.tmp
 /lib/
 *.zip
-/out.log
+/out.log*
